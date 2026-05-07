@@ -1,0 +1,111 @@
+<section class="relative bg-[#f8f6f3] py-24">
+  <div class="w-[90%] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+    <!-- IMAGE SLIDER -->
+    <div class="flex flex-col items-center text-center gap-6 mt-8">
+      <!-- SLIDER -->
+      <div class="relative w-full overflow-hidden rounded-xl">
+        <div
+          #sliderTrack
+          class="flex w-full"
+          [ngClass]="{'transition-transform duration-700 ease-in-out': !disableTransition() , 'transition-none': disableTransition()}"
+          [style.transform]="'translateX(-' + currentImage() * 100 + '%)'"
+          (transitionend)="onTransitionEnd()"
+        >
+          <ng-container *ngFor="let image of sliderImages">
+            <img [src]="image" alt="Organic Products" class="w-full min-w-full h-[500px] object-cover" />
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- STARS -->
+      <div class="text-yellow-400 text-md">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+
+      <p class="text-md leading-6 text-gray-700">
+        Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+        tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+      </p>
+
+      <!-- USER -->
+      <div class="flex items-center justify-center gap-5">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User"
+          class="w-16 h-16 rounded-full object-cover" />
+        <span class="text-md">
+          Mila Kunit
+        </span>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="space-y-10">
+      <!-- TOP -->
+      <div class="flex items-center gap-6">
+        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2019/06/organic-badge-freeimg.png"
+          alt="Certified" class="w-28" />
+        <div>
+          <h3 class="text-4xl font-bold font-serif">
+            Certified Products
+          </h3>
+          <p class="text-gray-700 text-lg mt-3">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+        </div>
+      </div>
+
+      <!-- TITLE -->
+      <h2 class="text-3xl md:text-4xl font-bold font-serif leading-tight">
+        We Deal With Various Quality Organic Products!
+      </h2>
+
+      <img 
+        src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2019/07/logo-leaf-new.png"
+        class="mx-auto lg:mx-0 w-20"
+        alt="leaf"
+      />
+
+      <!-- FEATURES -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-lg text-gray-800">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-[#7aa93c]"></i>
+          <span>Dry fruits</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-[#7aa93c]"></i>
+          <span>Milk products</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-[#7aa93c]"></i>
+          <span>Fresh vegetables</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-[#7aa93c]"></i>
+          <span>Organic honey</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-[#7aa93c]"></i>
+          <span>Dried vegetables</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-check text-[#7aa93c]"></i>
+          <span>Organic tea</span>
+        </div>
+      </div>
+
+      <!-- BUTTON -->
+      <button routerLink="/"
+        class="bg-[#7aa93c] hover:bg-[#6a9533] transition px-8 py-3 text-white font-bold text-md rounded-md cursor-pointer">
+        <i class="fa-solid fa-cart-shopping mr-3"></i>
+        START SHOPPING
+      </button>
+    </div>
+  </div>
+
+  <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2019/06/leaves-free-img.png" 
+    class="hidden lg:block absolute bottom-0 right-0 origin-bottom-right opacity-10 w-80 rotate-1" />
+
+</section>

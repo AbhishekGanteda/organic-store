@@ -2,72 +2,57 @@
 
   <div class="max-w-7xl mx-auto text-center">
 
-      
-      <!-- Heading -->
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 font-['Merriweather']">
-          Best Selling Products
-        </h2>
-        
-        <!-- Top Leaf -->
-        <img 
-          src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2019/07/logo-leaf-new.png"
-          class="mx-auto w-18 mb-12"
-        />
+
+    <!-- Heading -->
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 font-['Merriweather']">
+      Best Selling Products
+    </h2>
+
+    <!-- Top Leaf -->
+    <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2019/07/logo-leaf-new.png"
+      class="mx-auto w-18 mb-12" />
 
     <!-- Products Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
-      <!-- Product Card -->
+      @for (product of products; track product.id) {
+
       <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
 
-        <img 
-          src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/coffee-asorted-600x600.jpg"
-          class="w-full h-56 object-contain mb-4"
-        />
+        <img [src]="product.image" [alt]="product.name" class="w-full h-56 object-contain mb-4" />
 
-        <p class="text-sm text-gray-500">Groceries</p>
+        <p class="text-sm text-gray-500">
+          {{ product.category }}
+        </p>
 
-        <h3 class="text-lg font-semibold text-gray-900">
-          Assorted Coffee
+        <h3 class="text-lg font-semibold">
+          {{ product.name }}
         </h3>
 
-        <div class="text-yellow-400 text-sm">★★★★★</div>
+        <div class="text-yellow-400 text-sm">
 
-        <p class="text-green-600 font-bold mt-2">$35.00</p>
+          @for(star of [1,2,3,4,5]; track star) {
+
+          <span>
+            {{ star <= product.rating ? '★' : '☆' }} </span>
+
+              }
+
+        </div>
+
+        <p class="text-green-600 font-bold mt-2">
+          ${{ product.price }}
+        </p>
+
       </div>
 
-      <!-- Repeat -->
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
-        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/sanitizer-600x600.jpg" class="w-full h-56 object-contain mb-4" />
-        <p class="text-sm text-gray-500">Groceries</p>
-        <h3 class="text-lg font-semibold">Hand Sanitizer</h3>
-        <div class="text-yellow-400 text-sm">★★★★★</div>
-        <p class="text-green-600 font-bold mt-2">$15.00</p>
-      </div>
-
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
-        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/red-chillies-600x600.jpg" class="w-full h-56 object-contain mb-4" />
-        <p class="text-sm text-gray-500">Groceries</p>
-        <h3 class="text-lg font-semibold">Red Chillies</h3>
-        <div class="text-yellow-400 text-sm">★★★★★</div>
-        <p class="text-green-600 font-bold mt-2">$19.00</p>
-      </div>
-
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
-        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/edible-oil-600x600.jpg" class="w-full h-56 object-contain mb-4" />
-        <p class="text-sm text-gray-500">Groceries</p>
-        <h3 class="text-lg font-semibold">Edible Oil</h3>
-        <div class="text-yellow-400 text-sm">★★★★★</div>
-        <p class="text-green-600 font-bold mt-2">$25.00</p>
-      </div>
+      }
 
     </div>
 
   </div>
 
-  <img 
-    src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2021/03/basil-leaf.png"
-    class="hidden lg:block absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 w-36"
-  />
+  <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2021/03/basil-leaf.png"
+    class="hidden lg:block absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 w-36" />
 
 </section>

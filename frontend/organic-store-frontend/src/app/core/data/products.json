@@ -1,0 +1,151 @@
+[
+  {
+    "id": 1,
+    "name": "Assorted Coffee",
+    "category": "Groceries",
+    "price": 35,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/coffee-asorted-600x600.jpg",
+    "rating": 5,
+    "description": "Premium assorted organic coffee.",
+    "isTrending": true,
+    "isBestSeller": true,
+    "tags": ["Groceries", "Juice"]
+  },
+
+  {
+    "id": 2,
+    "name": "Hand Sanitizer",
+    "category": "Groceries",
+    "price": 15,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/sanitizer-600x600.jpg",
+    "rating": 4,
+    "description": "Natural hand sanitizer.",
+    "isTrending": true,
+    "tags": ["Groceries"]
+  },
+
+  {
+    "id": 3,
+    "name": "Red Chillies",
+    "category": "Groceries",
+    "price": 19,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/red-chillies-600x600.jpg",
+    "rating": 5,
+    "description": "Fresh handpicked chillies.",
+    "isTrending": true,
+    "tags": ["Groceries"]
+  },
+
+  {
+    "id": 4,
+    "name": "Edible Oil",
+    "category": "Groceries",
+    "price": 25,
+    "originalPrice": 34,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/edible-oil-600x600.jpg",
+    "rating": 4,
+    "description": "Pure organic edible oil.",
+    "isTrending": true,
+    "isSale": true,
+    "tags": ["Groceries"]
+  },
+
+  {
+    "id": 5,
+    "name": "Cashew Butter",
+    "category": "Groceries",
+    "price": 25,
+    "originalPrice": 35,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/cashew-butter-500-300x300.jpg",
+    "rating": 5,
+    "description": "Creamy organic cashew butter.",
+    "isBestSeller": true,
+    "isSale": true,
+    "tags": ["Groceries"]
+  },
+
+  {
+    "id": 6,
+    "name": "Diabetic Cookies",
+    "category": "Groceries",
+    "price": 25,
+    "originalPrice": 35,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/diabetic-cookies-300x300.jpg",
+    "rating": 4,
+    "description": "Healthy diabetic-friendly cookies.",
+    "isSale": true,
+    "tags": ["Groceries"]
+  },
+
+  {
+    "id": 7,
+    "name": "Farm Fresh Eggs",
+    "category": "Juice",
+    "price": 34,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/eggs-300x300.jpg",
+    "rating": 5,
+    "description": "Fresh organic farm eggs.",
+    "isFeatured": true,
+    "tags": ["Eggs", "Organic"]
+  },
+
+  {
+    "id": 8,
+    "name": "Fresh Orange Juice",
+    "category": "Juice",
+    "price": 18,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/orage-juice-kariz-300x300.jpg",
+    "rating": 4,
+    "description": "Natural fresh orange juice.",
+    "isFeatured": true,
+    "tags": ["Juice", "Organic"]
+  },
+
+  {
+    "id": 9,
+    "name": "Fresh Organic Honey",
+    "category": "Groceries",
+    "price": 34,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/organic-honey-300x300.jpg",
+    "rating": 5,
+    "description": "Pure natural organic honey.",
+    "isBestSeller": true,
+    "tags": ["Honey", "Organic"]
+  },
+
+  {
+    "id": 10,
+    "name": "Organic Face Scrub",
+    "category": "Groceries",
+    "price": 35,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/face-wash-300x300.jpg",
+    "rating": 4,
+    "description": "Natural organic face scrub for healthy skin.",
+    "isNew": true,
+    "tags": ["Beauty", "Organic"]
+  },
+
+  {
+    "id": 11,
+    "name": "Pulses From Organic Farm",
+    "category": "Groceries",
+    "price": 15,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/pulses-300x300.jpg",
+    "rating": 5,
+    "description": "Fresh organic farm pulses.",
+    "isFeatured": true,
+    "tags": ["Pulses", "Organic"]
+  },
+
+  {
+    "id": 12,
+    "name": "Wheat From Organic Farms",
+    "category": "Groceries",
+    "price": 34,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/wheat-300x300.jpg",
+    "rating": 5,
+    "description": "Premium organic wheat directly from farms.",
+    "isBestSeller": true,
+    "tags": ["Wheat", "Organic"]
+  }
+]

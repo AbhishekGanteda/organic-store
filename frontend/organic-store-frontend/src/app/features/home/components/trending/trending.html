@@ -15,53 +15,61 @@
         />
 
     <!-- Products Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
-      <!-- Product Card -->
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
+  @for (product of trendingProducts; track product.id) {
 
-        <img 
-          src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/coffee-asorted-600x600.jpg"
-          class="w-full h-56 object-contain mb-4"
-        />
+    <div
+      class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition"
+    >
 
-        <p class="text-sm text-gray-500">Groceries</p>
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        class="w-full h-56 object-contain mb-4"
+      />
 
-        <h3 class="text-lg font-semibold text-gray-900">
-          Assorted Coffee
-        </h3>
+      <p class="text-sm text-gray-500">
+        {{ product.category }}
+      </p>
 
-        <div class="text-yellow-400 text-sm">★★★★★</div>
+      <h3 class="text-lg font-semibold text-gray-900">
+        {{ product.name }}
+      </h3>
 
-        <p class="text-green-600 font-bold mt-2">$35.00</p>
+      <!-- Rating -->
+      <div class="text-yellow-400 text-sm">
+
+        @for(star of [1,2,3,4,5]; track star) {
+
+          <span>
+            {{ star <= product.rating ? '★' : '☆' }}
+          </span>
+
+        }
+
       </div>
 
-      <!-- Repeat -->
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
-        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/sanitizer-600x600.jpg" class="w-full h-56 object-contain mb-4" />
-        <p class="text-sm text-gray-500">Groceries</p>
-        <h3 class="text-lg font-semibold">Hand Sanitizer</h3>
-        <div class="text-yellow-400 text-sm">★★★★★</div>
-        <p class="text-green-600 font-bold mt-2">$15.00</p>
-      </div>
+      <!-- Price -->
+      <p class="text-green-600 font-bold mt-2">
 
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
-        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/red-chillies-600x600.jpg" class="w-full h-56 object-contain mb-4" />
-        <p class="text-sm text-gray-500">Groceries</p>
-        <h3 class="text-lg font-semibold">Red Chillies</h3>
-        <div class="text-yellow-400 text-sm">★★★★★</div>
-        <p class="text-green-600 font-bold mt-2">$19.00</p>
-      </div>
+        @if(product.originalPrice) {
 
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
-        <img src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/edible-oil-600x600.jpg" class="w-full h-56 object-contain mb-4" />
-        <p class="text-sm text-gray-500">Groceries</p>
-        <h3 class="text-lg font-semibold">Edible Oil</h3>
-        <div class="text-yellow-400 text-sm">★★★★★</div>
-        <p class="text-green-600 font-bold mt-2">$25.00</p>
-      </div>
+          <span class="line-through text-gray-400 mr-2">
+            ${{ product.originalPrice }}
+          </span>
+
+        }
+
+        ${{ product.price }}
+
+      </p>
 
     </div>
+
+  }
+
+</div>
 
   </div>
 
