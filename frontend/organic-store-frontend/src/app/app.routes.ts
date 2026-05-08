@@ -3,6 +3,7 @@ import { About } from './features/about/about';
 import { Everything } from './features/everything/everything';
 import { Groceries } from './features/groceries/groceries';
 import { Juice } from './features/juice/juice';
+import { Contact } from './features/contact/contact';
 
 export const routes: Routes = [
   {
@@ -26,5 +27,8 @@ export const routes: Routes = [
     path: 'juice',
     component: Juice,
   },
-
+  {
+    path: 'contact',
+    component: Contact,
+  },
 ];
