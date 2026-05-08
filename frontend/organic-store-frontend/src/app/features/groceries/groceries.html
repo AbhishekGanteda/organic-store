@@ -52,7 +52,7 @@
 
                 @for(product of filteredProducts; track product.id) {
 
-                <div class="rounded-lg hover:shadow-lg transition text-center mb-10">
+                <div class="rounded-lg hover:shadow-lg transition text-center mb-10 cursor-pointer" [routerLink]="['/product', product.id]">
 
                     <img [src]="product.image" [alt]="product.name" class="w-full h-65 object-contain mb-4" />
 

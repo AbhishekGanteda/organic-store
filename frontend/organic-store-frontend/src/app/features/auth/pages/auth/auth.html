@@ -1,0 +1,125 @@
+<section class="min-h-screen bg-[#f8f6f3] flex items-center justify-center px-6">
+
+  <div class="bg-white w-full max-w-5xl rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+
+    <!-- LEFT -->
+    <div class="hidden lg:flex items-center justify-center">
+
+      <img
+        src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2019/06/sydney-rae-668606-unsplash.jpg"
+        class="w-full h-full object-cover opacity-60"
+      />
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="p-10">
+
+      <!-- TOGGLE -->
+      <div class="flex gap-5 mb-10">
+
+        <button
+          (click)="showLogin()"
+          class="px-6 py-3 font-semibold border cursor-pointer"
+          [class.bg-[#8bc34a]]="isLoginMode"
+          [class.text-white]="isLoginMode"
+        >
+          Login
+        </button>
+
+        <button
+          (click)="showRegister()"
+          class="px-6 py-3 font-semibold border cursor-pointer"
+          [class.bg-[#8bc34a]]="!isLoginMode"
+          [class.text-white]="!isLoginMode"
+        >
+          Register
+        </button>
+
+      </div>
+
+      <!-- LOGIN -->
+      @if(isLoginMode) {
+
+      <form
+        [formGroup]="loginForm"
+        class="space-y-6"
+      >
+
+        <input
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+          class="w-full border px-5 py-4"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          class="w-full border px-5 py-4"
+        />
+
+        <button
+          routerLink="/"
+          class="w-full bg-[#8bc34a] text-white py-4 font-bold cursor-pointer"
+        >
+          LOGIN
+        </button>
+
+      </form>
+
+      }
+
+      <!-- REGISTER -->
+      @if(!isLoginMode) {
+
+      <form
+        [formGroup]="registerForm"
+        class="space-y-6"
+      >
+
+        <input
+          type="text"
+          placeholder="Name"
+          formControlName="name"
+          class="w-full border px-5 py-4"
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+          class="w-full border px-5 py-4"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          class="w-full border px-5 py-4"
+        />
+
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          formControlName="confirmPassword"
+          class="w-full border px-5 py-4"
+        />
+
+        <button
+          (click)="showLogin()"
+          class="w-full bg-[#8bc34a] text-white py-4 font-bold cursor-pointer"
+        >
+          REGISTER
+        </button>
+
+      </form>
+
+      }
+
+    </div>
+
+  </div>
+
+</section>

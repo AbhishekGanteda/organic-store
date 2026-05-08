@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-
 import { Product } from '../../../../core/models/product.model';
 import { ProductService } from '../../../../core/services/product.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-products',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })

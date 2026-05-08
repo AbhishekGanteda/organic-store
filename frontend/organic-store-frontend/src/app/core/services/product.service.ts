@@ -15,11 +15,11 @@ export class ProductService {
     return this.products;
   }
 
-  getProductById(id: number): Product | undefined {
+  getProductById(id: number): Product {
 
     return this.products.find(
       product => product.id === id
-    );
+    )!;
 
   }
 
@@ -47,6 +47,19 @@ export class ProductService {
       product => product.isSale
     );
 
+  }
+
+  getRelatedProducts(
+    category: string,
+    currentId: number
+  ): Product[] {
+
+    return this.products
+      .filter(product =>
+        product.category === category &&
+        product.id !== currentId
+      )
+      .slice(0, 3);
   }
 
 }
