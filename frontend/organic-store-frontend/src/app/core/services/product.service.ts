@@ -31,4 +31,22 @@ export class ProductService {
 
   }
 
+  getProductsByCategory(category: string): Product[] {
+
+    return this.products.filter(
+      product =>
+        product.category.toLowerCase() ===
+        category.toLowerCase()
+    );
+
+  }
+
+  getSaleProducts(): Product[] {
+
+    return this.products.filter(
+      product => product.isSale
+    );
+
+  }
+
 }

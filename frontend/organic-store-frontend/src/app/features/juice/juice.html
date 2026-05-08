@@ -1,48 +1,6 @@
 <section class="bg-[#f8f6f3] py-16">
 
-    <div class="w-[95%] max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12">
-
-        <!-- SIDEBAR -->
-        <aside class="space-y-8">
-
-            <!-- SEARCH -->
-            <div class="flex">
-
-                <input type="text" placeholder="Search products..." [(ngModel)]="searchText" (input)="filterProducts()"
-                    class="w-full bg-white border border-gray-300 px-3 py-3 outline-none" />
-
-                <button class="bg-[#8bc34a] px-3 text-white text-xl cursor-pointer">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-
-            </div>
-
-            <!-- FILTER -->
-            <div>
-
-                <h2 class="text-4xl font-bold font-serif mb-8">
-                    Categories
-                </h2>
-
-                <div class="space-y-5 text-[#8bc34a] text-xl">
-
-                    <button class="block cursor-pointer" (click)="selectCategory('All')">
-                        All
-                    </button>
-
-                    <button class="block cursor-pointer" (click)="selectCategory('Groceries')">
-                        Groceries
-                    </button>
-
-                    <button class="block cursor-pointer" (click)="selectCategory('Juice')">
-                        Juice
-                    </button>
-
-                </div>
-
-            </div>
-
-        </aside>
+    <div class="w-[95%] max-w-7xl mx-auto">
 
         <!-- RIGHT SIDE -->
         <div>
@@ -56,9 +14,17 @@
 
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
-                    <p class="text-xl text-gray-700">
-                        Showing {{ filteredProducts.length }} results
-                    </p>
+                    <div class="flex">
+
+                        <input type="text" placeholder="Search products..." [(ngModel)]="searchText"
+                            (input)="filterProducts()"
+                            class="w-full bg-white border border-gray-300 px-3 py-3 outline-none" />
+
+                        <button class="bg-[#8bc34a] px-3 text-white text-xl cursor-pointer">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+                    </div>
 
                     <select class="border border-gray-300 px-3 py-2 bg-white outline-none"
                         (change)="sortProducts($event)">
@@ -82,7 +48,7 @@
             </div>
 
             <!-- PRODUCTS GRID -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
 
                 @for(product of filteredProducts; track product.id) {
 
