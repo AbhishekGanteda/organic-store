@@ -1,0 +1,228 @@
+<section class="bg-[#f8f6f3] min-h-screen py-20">
+
+  <div class="w-[92%] max-w-7xl mx-auto">
+
+    <!-- TITLE -->
+    <h1 class="text-5xl font-bold font-serif mb-16">
+
+      Shopping Cart
+
+    </h1>
+
+    @if(cartItems.length > 0) {
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-12">
+
+      <!-- LEFT -->
+      <div class="bg-white p-8 rounded-xl shadow-sm">
+
+        <!-- HEADERS -->
+        <div
+          class="hidden md:grid grid-cols-[120px_1fr_150px_150px_60px] gap-5 border-b border-gray-200 pb-5 mb-8 font-bold text-lg"
+        >
+
+          <p>Image</p>
+
+          <p>Product</p>
+
+          <p>Quantity</p>
+
+          <p>Total</p>
+
+          <p></p>
+
+        </div>
+
+        <!-- ITEMS -->
+        <div class="space-y-10">
+
+          @for(item of cartItems; track item.product.id) {
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-[120px_1fr_150px_150px_60px] gap-5 items-center border-b border-gray-200 pb-8"
+          >
+
+            <!-- IMAGE -->
+            <img
+              [routerLink]="['/product', item.product.id]"
+              [src]="item.product.image"
+              [alt]="item.product.name"
+              class="w-28 h-28 object-contain bg-[#f8f6f3] cursor-pointer"
+            />
+
+            <!-- NAME -->
+            <div>
+
+              <h2 class="text-xl font-semibold mb-2">
+
+                {{ item.product.name }}
+
+              </h2>
+
+              <p class="text-[#8bc34a] text-lg">
+
+                ${{ item.product.price }}
+
+              </p>
+
+            </div>
+
+            <!-- QUANTITY -->
+            <div class="flex border border-gray-300 w-fit">
+
+              <button
+                (click)="decreaseQuantity(item)"
+                class="px-4 py-2 text-xl cursor-pointer"
+              >
+                -
+              </button>
+
+              <div class="px-5 py-2 border-x border-gray-300">
+
+                {{ item.quantity }}
+
+              </div>
+
+              <button
+                (click)="increaseQuantity(item)"
+                class="px-4 py-2 text-xl cursor-pointer"
+              >
+                +
+              </button>
+
+            </div>
+
+            <!-- TOTAL -->
+            <p class="text-xl font-bold">
+
+              ${{ item.product.price * item.quantity }}
+
+            </p>
+
+            <!-- REMOVE -->
+            <button
+              (click)="removeItem(item.product.id)"
+              class="bg-[#8bc34a] text-md text-white hover:bg-[#76aa3f] transition cursor-pointer"
+            >
+              Remove
+            </button>
+
+          </div>
+
+          }
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div
+        class="bg-white p-8 rounded-xl shadow-sm h-fit sticky top-10"
+      >
+
+        <h2 class="text-3xl font-bold font-serif mb-8">
+
+          Cart Totals
+
+        </h2>
+
+        <div
+          class="flex justify-between items-center border-b border-gray-200 pb-5 mb-5"
+        >
+
+          <span class="text-xl">
+
+            Subtotal
+
+          </span>
+
+          <span class="text-2xl font-bold">
+
+            ${{ getSubtotal() }}
+
+          </span>
+
+        </div>
+
+        <div
+          class="flex justify-between items-center border-b border-gray-200 pb-5 mb-10"
+        >
+
+          <span class="text-xl">
+
+            Shipping
+
+          </span>
+
+          <span class="text-[#8bc34a] font-semibold">
+
+            Free
+
+          </span>
+
+        </div>
+
+        <div
+          class="flex justify-between items-center mb-10"
+        >
+
+          <span class="text-2xl font-bold">
+
+            Total
+
+          </span>
+
+          <span class="text-3xl font-bold">
+
+            ${{ getSubtotal() }}
+
+          </span>
+
+        </div>
+
+        <button
+          class="w-full bg-[#8bc34a] hover:bg-[#76aa3f] transition text-white py-4 text-xl font-bold cursor-pointer"
+        >
+
+          Proceed To Checkout
+
+        </button>
+
+      </div>
+
+    </div>
+
+    }
+
+    @else {
+
+    <div class="bg-white p-20 rounded-xl text-center shadow-sm">
+
+      <h2 class="text-4xl font-bold font-serif mb-6">
+
+        Your cart is empty
+
+      </h2>
+
+      <p class="text-gray-600 text-xl mb-10">
+
+        Looks like you haven’t added anything yet.
+
+      </p>
+
+      <a
+        routerLink="/everything"
+        class="inline-block bg-[#8bc34a] hover:bg-[#76aa3f] transition text-white px-10 py-4 text-xl font-bold"
+      >
+
+        Continue Shopping
+
+      </a>
+
+    </div>
+
+    }
+
+  </div>
+
+</section>

@@ -9,9 +9,11 @@
     "description": "Premium assorted organic coffee.",
     "isTrending": true,
     "isBestSeller": true,
-    "tags": ["Groceries", "Juice"]
+    "tags": [
+      "Groceries",
+      "Juice"
+    ]
   },
-
   {
     "id": 2,
     "name": "Hand Sanitizer",
@@ -21,9 +23,25 @@
     "rating": 4,
     "description": "Natural hand sanitizer.",
     "isTrending": true,
-    "tags": ["Groceries"]
+    "tags": [
+      "Groceries"
+    ]
   },
-
+  {
+    "id": 13,
+    "name": "Fresh Apple Juice",
+    "category": "Juice",
+    "price": 22,
+    "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/orage-juice-kariz-300x300.jpg",
+    "rating": 5,
+    "description": "Refreshing organic apple juice made from fresh apples.",
+    "isTrending": true,
+    "tags": [
+      "Juice",
+      "Apple",
+      "Organic"
+    ]
+  },
   {
     "id": 3,
     "name": "Red Chillies",
@@ -33,9 +51,10 @@
     "rating": 5,
     "description": "Fresh handpicked chillies.",
     "isTrending": true,
-    "tags": ["Groceries"]
+    "tags": [
+      "Groceries"
+    ]
   },
-
   {
     "id": 4,
     "name": "Edible Oil",
@@ -47,9 +66,10 @@
     "description": "Pure organic edible oil.",
     "isTrending": true,
     "isSale": true,
-    "tags": ["Groceries"]
+    "tags": [
+      "Groceries"
+    ]
   },
-
   {
     "id": 5,
     "name": "Cashew Butter",
@@ -61,9 +81,25 @@
     "description": "Creamy organic cashew butter.",
     "isBestSeller": true,
     "isSale": true,
-    "tags": ["Groceries"]
+    "tags": [
+      "Groceries"
+    ]
   },
-
+  {
+    "id": 16,
+    "name": "Mango Juice",
+    "category": "Juice",
+    "price": 24,
+    "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?q=80&w=1200&auto=format&fit=crop",
+    "rating": 5,
+    "description": "Sweet and natural mango juice with rich flavor.",
+    "isTrending": true,
+    "tags": [
+      "Juice",
+      "Mango",
+      "Organic"
+    ]
+  },
   {
     "id": 6,
     "name": "Diabetic Cookies",
@@ -74,21 +110,24 @@
     "rating": 4,
     "description": "Healthy diabetic-friendly cookies.",
     "isSale": true,
-    "tags": ["Groceries"]
+    "tags": [
+      "Groceries"
+    ]
   },
-
   {
     "id": 7,
     "name": "Farm Fresh Eggs",
-    "category": "Juice",
+    "category": "Groceries",
     "price": 34,
     "image": "https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/eggs-300x300.jpg",
     "rating": 5,
     "description": "Fresh organic farm eggs.",
     "isFeatured": true,
-    "tags": ["Eggs", "Organic"]
+    "tags": [
+      "Eggs",
+      "Organic"
+    ]
   },
-
   {
     "id": 8,
     "name": "Fresh Orange Juice",
@@ -98,9 +137,11 @@
     "rating": 4,
     "description": "Natural fresh orange juice.",
     "isFeatured": true,
-    "tags": ["Juice", "Organic"]
+    "tags": [
+      "Juice",
+      "Organic"
+    ]
   },
-
   {
     "id": 9,
     "name": "Fresh Organic Honey",
@@ -110,9 +151,26 @@
     "rating": 5,
     "description": "Pure natural organic honey.",
     "isBestSeller": true,
-    "tags": ["Honey", "Organic"]
+    "tags": [
+      "Honey",
+      "Organic"
+    ]
   },
-
+  {
+    "id": 15,
+    "name": "Watermelon Juice",
+    "category": "Juice",
+    "price": 20,
+    "image": "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?q=80&w=1200&auto=format&fit=crop",
+    "rating": 5,
+    "description": "Cool and refreshing watermelon juice for summer days.",
+    "isBestSeller": true,
+    "tags": [
+      "Juice",
+      "Watermelon",
+      "Organic"
+    ]
+  },
   {
     "id": 10,
     "name": "Organic Face Scrub",
@@ -122,9 +180,11 @@
     "rating": 4,
     "description": "Natural organic face scrub for healthy skin.",
     "isNew": true,
-    "tags": ["Beauty", "Organic"]
+    "tags": [
+      "Beauty",
+      "Organic"
+    ]
   },
-
   {
     "id": 11,
     "name": "Pulses From Organic Farm",
@@ -134,9 +194,11 @@
     "rating": 5,
     "description": "Fresh organic farm pulses.",
     "isFeatured": true,
-    "tags": ["Pulses", "Organic"]
+    "tags": [
+      "Pulses",
+      "Organic"
+    ]
   },
-
   {
     "id": 12,
     "name": "Wheat From Organic Farms",
@@ -146,6 +208,39 @@
     "rating": 5,
     "description": "Premium organic wheat directly from farms.",
     "isBestSeller": true,
-    "tags": ["Wheat", "Organic"]
+    "tags": [
+      "Wheat",
+      "Organic"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Mixed Fruit Juice",
+    "category": "Juice",
+    "price": 26,
+    "image": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?q=80&w=1200&auto=format&fit=crop",
+    "rating": 4,
+    "description": "Healthy mixed fruit juice packed with vitamins.",
+    "isFeatured": true,
+    "tags": [
+      "Juice",
+      "Fruit",
+      "Organic"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Pineapple Juice",
+    "category": "Juice",
+    "price": 21,
+    "image": "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?q=80&w=1200&auto=format&fit=crop",
+    "rating": 4,
+    "description": "Fresh pineapple juice with tropical taste.",
+    "isFeatured": true,
+    "tags": [
+      "Juice",
+      "Pineapple",
+      "Organic"
+    ]
   }
 ]

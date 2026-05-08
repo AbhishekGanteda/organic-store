@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
+import { CartService } from '../../core/services/cart';
 
 @Component({
   selector: 'app-product-details',
@@ -22,7 +23,8 @@ export class ProductDetails {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -50,6 +52,14 @@ export class ProductDetails {
     if (this.quantity > 1) {
       this.quantity--;
     }
+
+  }
+
+  addToCart() {
+    this.cartService.addToCart(
+      this.product,
+      this.quantity
+    );
 
   }
 

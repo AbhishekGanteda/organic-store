@@ -36,10 +36,16 @@ export const routes: Routes = [
     path: 'auth',
     component: Auth,
   },
-    {
+  {
     path: 'product/:id',
     loadComponent: () =>
       import('./features/product-details/product-details')
         .then(m => m.ProductDetails)
+  },
+  {
+    path: 'cart',
+    loadComponent: () =>
+      import('./features/cart/cart')
+        .then(m => m.Cart)
   }
 ];

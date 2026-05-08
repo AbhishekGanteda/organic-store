@@ -1,3 +1,13 @@
+@if(showToast) {
+
+<app-toast
+  [message]="toastMessage"
+  [type]="toastType"
+/>
+
+}
+
+
 <section class="min-h-screen bg-[#f8f6f3] flex items-center justify-center px-6">
 
   <div class="bg-white w-full max-w-5xl rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
@@ -43,6 +53,7 @@
 
       <form
         [formGroup]="loginForm"
+        (ngSubmit)="login()"
         class="space-y-6"
       >
 
@@ -61,7 +72,7 @@
         />
 
         <button
-          routerLink="/"
+          type="submit"
           class="w-full bg-[#8bc34a] text-white py-4 font-bold cursor-pointer"
         >
           LOGIN
@@ -76,6 +87,7 @@
 
       <form
         [formGroup]="registerForm"
+        (ngSubmit)="register()"
         class="space-y-6"
       >
 
@@ -108,7 +120,7 @@
         />
 
         <button
-          (click)="showLogin()"
+          type="submit"
           class="w-full bg-[#8bc34a] text-white py-4 font-bold cursor-pointer"
         >
           REGISTER
