@@ -4,7 +4,7 @@ import { Everything } from './features/everything/everything';
 import { Groceries } from './features/groceries/groceries';
 import { Juice } from './features/juice/juice';
 import { Contact } from './features/contact/contact';
-import { Auth } from './features/auth/pages/auth/auth';
+import { Auth } from './features/auth/auth';
 
 export const routes: Routes = [
   {

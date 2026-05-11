@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth';
-import { Toast } from '../../../../shared/components/toast/toast';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth';
+import { Toast } from '../../shared/components/toast/toast';
 
 @Component({
   selector: 'app-auth',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, Toast],
+  imports: [CommonModule, ReactiveFormsModule, Toast],
   templateUrl: './auth.html',
   styleUrl: './auth.css',
 })

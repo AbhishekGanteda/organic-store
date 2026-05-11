@@ -25,21 +25,25 @@ export class ProductDetails {
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService
-  ) {}
+  ) { }
 
   ngOnInit() {
 
-    const id =
-      Number(this.route.snapshot.paramMap.get('id'));
+    this.route.paramMap.subscribe(params => {
 
-    this.product =
-      this.productService.getProductById(id);
+      const id =
+        Number(params.get('id'));
 
-    this.relatedProducts =
-      this.productService.getRelatedProducts(
-        this.product.category,
-        id
-      );
+      this.product =
+        this.productService.getProductById(id);
+
+      this.relatedProducts =
+        this.productService.getRelatedProducts(
+          this.product.category,
+          id
+        );
+
+    });
 
   }
 
