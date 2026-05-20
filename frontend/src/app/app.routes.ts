@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Home } from './features/home/home';
 import { About } from './features/about/about';
 import { Everything } from './features/everything/everything';
 import { Groceries } from './features/groceries/groceries';
@@ -9,8 +10,7 @@ import { Auth } from './features/auth/auth';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./features/home/home').then(m => m.Home)
+    component: Home
   },
   {
     path: 'about',

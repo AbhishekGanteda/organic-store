@@ -17,35 +17,9 @@
 
       @for (product of products; track product.id) {
 
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition" [routerLink]="['/product', product.id]"
-  class="cursor-pointer">
-
-        <img [src]="product.image" [alt]="product.name" class="w-full h-56 object-contain mb-4 hover:scale-105 transition" />
-
-        <p class="text-sm text-gray-500">
-          {{ product.category }}
-        </p>
-
-        <h3 class="text-lg font-semibold">
-          {{ product.name }}
-        </h3>
-
-        <div class="text-yellow-400 text-sm">
-
-          @for(star of [1,2,3,4,5]; track star) {
-
-          <span>
-            {{ star <= product.rating ? '★' : '☆' }} </span>
-
-              }
-
-        </div>
-
-        <p class="text-green-600 font-bold mt-2">
-          ${{ product.price }}
-        </p>
-
-      </div>
+      <app-product-card
+        [product]="product"
+      />
 
       }
 

@@ -29,6 +29,10 @@ export class ProductDetails {
 
   ngOnInit() {
 
+    this.route.url.subscribe(url => {
+      console.log(url);
+    });
+
     this.route.paramMap.subscribe(params => {
 
       const id =

@@ -1,0 +1,17 @@
+<div class="min-w-[350px] h-full bg-white p-8 rounded-lg shadow text-center space-y-4 flex flex-col justify-between">
+    <!-- Stars -->
+
+    <div class="text-yellow-400 text-2xl">{{ getStars(review.rating) }}</div>
+
+    <!-- Review -->
+    <p class="text-gray-600 min-h-[60px]">
+        {{ review.review }}
+    </p>
+
+    <!-- User -->
+    <div class="flex items-center justify-center gap-3 pt-4">
+        <img [src]="review.image" class="w-10 h-10 rounded-full" />
+        <p class="font-semibold text-gray-800">{{ review.name }}</p>
+    </div>
+
+</div>

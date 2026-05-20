@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Free Shipping",
+    "icon": "local_shipping",
+    "description": "Above $5 Only"
+  },
+  {
+    "id": 2,
+    "name": "Certified Organic",
+    "icon": "verified_user",
+    "description": "100% Guarantee"
+  },
+  {
+    "id": 3,
+    "name": "Huge Savings",
+    "icon": "payments",
+    "description": "At Lowest Price"
+  },
+  {
+    "id": 4,
+    "name": "Easy Returns",
+    "icon": "recycling",
+    "description": "No Questions Asked"
+  }
+]

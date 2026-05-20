@@ -2,41 +2,16 @@
 
   <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-    <!-- Card 1 -->
-    <div class="bg-[#2a2a2a] p-6 rounded-lg flex items-start gap-4 hover:bg-[#333] hover:scale-105 transition cursor-pointer">
-      <span class="material-icons text-green-500 text-3xl">local_shipping</span>
-      <div>
-        <h3 class="text-white font-semibold text-lg">Free Shipping</h3>
-        <p class="text-gray-400 text-sm">Above $5 Only</p>
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="bg-[#2a2a2a] p-6 rounded-lg flex items-start gap-4 hover:bg-[#333] hover:scale-105 transition cursor-pointer">
-      <span class="material-icons text-green-500 text-3xl">verified_user</span>
-      <div>
-        <h3 class="text-white font-semibold text-lg">Certified Organic</h3>
-        <p class="text-gray-400 text-sm">100% Guarantee</p>
-      </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="bg-[#2a2a2a] p-6 rounded-lg flex items-start gap-4 hover:bg-[#333] hover:scale-105 transition cursor-pointer">
-      <span class="material-icons text-green-500 text-3xl">payments</span>
-      <div>
-        <h3 class="text-white font-semibold text-lg">Huge Savings</h3>
-        <p class="text-gray-400 text-sm">At Lowest Price</p>
-      </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="bg-[#2a2a2a] p-6 rounded-lg flex items-start gap-4 hover:bg-[#333] hover:scale-105 transition cursor-pointer">
-      <span class="material-icons text-green-500 text-3xl">recycling</span>
-      <div>
-        <h3 class="text-white font-semibold text-lg">Easy Returns</h3>
-        <p class="text-gray-400 text-sm">No Questions Asked</p>
-      </div>
-    </div>
+    @for (feature of features; track feature.id) {
+       <!-- Card -->
+       <div class="bg-[#2a2a2a] p-6 rounded-lg flex items-start gap-4 hover:bg-[#333] hover:scale-105 transition cursor-pointer">
+         <span class="material-icons text-green-500 text-3xl">{{ feature.icon }}</span>
+         <div>
+           <h3 class="text-white font-semibold text-lg">{{ feature.name }}</h3>
+           <p class="text-gray-400 text-sm">{{ feature.description }}</p>
+         </div>
+       </div>
+     }
 
   </div>
 

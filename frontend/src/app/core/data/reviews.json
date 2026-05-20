@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "name": "Jenny Smith",
+    "image": "https://randomuser.me/api/portraits/women/44.jpg",
+    "review": "Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+    "rating": 4
+  },
+  {
+    "id": 2,
+    "name": "John Doe",
+    "image": "https://randomuser.me/api/portraits/men/32.jpg",
+    "review": "Amazing quality products! Fresh and organic just like promised. Highly recommended.",
+    "rating": 5
+  },
+  {
+    "id": 3,
+    "name": "Sarah Lee",
+    "image": "https://randomuser.me/api/portraits/women/68.jpg",
+    "review": "Fast delivery and great service. I love the packaging and freshness.",
+    "rating": 3
+  },
+  {
+    "id": 4,
+    "name": "Michael Brown",
+    "image": "https://randomuser.me/api/portraits/men/45.jpg",
+    "review": "Customer support was extremely helpful and the products arrived in perfect condition.",
+    "rating": 5
+  },
+  {
+    "id": 5,
+    "name": "Emily Davis",
+    "image": "https://randomuser.me/api/portraits/women/12.jpg",
+    "review": "Very fresh and healthy products. Packaging was eco friendly and neat.",
+    "rating": 4
+  },
+  {
+    "id": 6,
+    "name": "Daniel Wilson",
+    "image": "https://randomuser.me/api/portraits/men/76.jpg",
+    "review": "Affordable prices with premium quality. Definitely ordering again.",
+    "rating": 5
+  },
+  {
+    "id": 7,
+    "name": "Sophia Taylor",
+    "image": "https://randomuser.me/api/portraits/women/25.jpg",
+    "review": "The vegetables were fresh and tasted amazing. Delivery was also very quick.",
+    "rating": 4
+  },
+  {
+    "id": 8,
+    "name": "James Anderson",
+    "image": "https://randomuser.me/api/portraits/men/54.jpg",
+    "review": "Good experience overall. The fruits were fresh but delivery took slightly longer.",
+    "rating": 3
+  },
+  {
+    "id": 9,
+    "name": "Olivia Martin",
+    "image": "https://randomuser.me/api/portraits/women/33.jpg",
+    "review": "Excellent organic collection. You can really feel the quality difference.",
+    "rating": 5
+  },
+  {
+    "id": 10,
+    "name": "William Thomas",
+    "image": "https://randomuser.me/api/portraits/men/81.jpg",
+    "review": "The website was easy to use and checkout process was smooth.",
+    "rating": 4
+  },
+  {
+    "id": 11,
+    "name": "Emma White",
+    "image": "https://randomuser.me/api/portraits/women/56.jpg",
+    "review": "Loved the freshness and fast shipping. Customer care was responsive too.",
+    "rating": 5
+  },
+  {
+    "id": 12,
+    "name": "Benjamin Harris",
+    "image": "https://randomuser.me/api/portraits/men/29.jpg",
+    "review": "Good quality products with reasonable pricing. Will recommend to friends.",
+    "rating": 4
+  }
+]

@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { RouterLink } from '@angular/router';
+import { ProductCard } from '../../shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-everything',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, ProductCard],
   templateUrl: './everything.html',
   styleUrl: './everything.css',
 })
