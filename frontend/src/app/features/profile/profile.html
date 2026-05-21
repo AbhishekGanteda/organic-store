@@ -1,0 +1,325 @@
+<div class="max-w-5xl mx-auto py-12 px-6">
+
+  <ng-container *ngIf="currentUser; else noUser">
+
+    <!-- Header -->
+    <div class="bg-white rounded-2xl shadow-sm p-8 mb-8">
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+        <div class="flex items-center gap-5">
+
+          <!-- Avatar -->
+          <div class="w-20 h-20 rounded-full bg-green-600 text-white flex items-center justify-center text-3xl font-bold uppercase">
+            {{ currentUser.name?.charAt(0) }}
+          </div>
+
+          <!-- User Info -->
+          <div>
+
+            <h1 class="text-3xl font-bold text-gray-900">
+              {{ currentUser.name }}
+            </h1>
+
+            <p class="text-gray-500 mt-1">
+              {{ currentUser.email }}
+            </p>
+
+            <span class="inline-block mt-3 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm capitalize">
+              {{ currentUser.role }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3">
+
+          <button
+            *ngIf="!isEditing"
+            (click)="startEditing()"
+            class="px-5 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition cursor-pointer"
+          >
+            Edit Profile
+          </button>
+
+          <button
+            (click)="onLogout()"
+            class="px-5 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div
+      *ngIf="!isEditing"
+      class="grid grid-cols-1 md:grid-cols-2 gap-6"
+    >
+
+      <!-- Personal Info -->
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+
+        <h2 class="text-xl font-semibold mb-5">
+          Personal Information
+        </h2>
+
+        <div class="space-y-4">
+
+          <div>
+            <p class="text-sm text-gray-500">
+              Full Name
+            </p>
+
+            <p class="text-lg font-medium">
+              {{ currentUser.name }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm text-gray-500">
+              Email Address
+            </p>
+
+            <p class="text-lg font-medium">
+              {{ currentUser.email }}
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm text-gray-500">
+              Role
+            </p>
+
+            <p class="text-lg font-medium capitalize">
+              {{ currentUser.role }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+
+        <h2 class="text-xl font-semibold mb-5">
+          Address Information
+        </h2>
+
+        <ng-container *ngIf="currentUser.addresses?.length">
+
+          <div class="space-y-3">
+
+            <div>
+              <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                {{ currentUser.addresses[0].label }}
+              </span>
+            </div>
+
+            <p class="text-gray-700">
+              {{ currentUser.addresses[0].street }}
+            </p>
+
+            <p class="text-gray-700">
+              {{ currentUser.addresses[0].city }},
+              {{ currentUser.addresses[0].state }}
+            </p>
+
+            <p class="text-gray-700">
+              {{ currentUser.addresses[0].postalCode }}
+            </p>
+
+            <p class="text-gray-700">
+              {{ currentUser.addresses[0].country }}
+            </p>
+          </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="!currentUser.addresses?.length">
+
+          <p class="text-gray-500">
+            No address added yet.
+          </p>
+
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div
+      *ngIf="isEditing"
+      class="bg-white rounded-2xl shadow-sm p-8"
+    >
+
+      <div class="flex items-center justify-between mb-8">
+
+        <h2 class="text-2xl font-bold">
+          Edit Profile
+        </h2>
+
+        <button
+          (click)="cancelEditing()"
+          class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition cursor-pointer"
+        >
+          Cancel
+        </button>
+      </div>
+
+      <form
+        [formGroup]="profileForm"
+        (ngSubmit)="saveProfile()"
+        class="space-y-6"
+      >
+
+        <!-- Name -->
+        <div>
+
+          <label class="block mb-2 font-medium">
+            Full Name
+          </label>
+
+          <input
+            formControlName="name"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        <!-- Email -->
+        <div>
+
+          <label class="block mb-2 font-medium">
+            Email Address
+          </label>
+
+          <input
+            formControlName="email"
+            type="email"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        <!-- Address -->
+        <div formGroupName="address">
+
+          <h3 class="text-xl font-semibold mb-4">
+            Address
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <input
+              formControlName="label"
+              placeholder="Address Label"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+
+            <input
+              formControlName="street"
+              placeholder="Street"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+
+            <input
+              formControlName="city"
+              placeholder="City"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+
+            <input
+              formControlName="state"
+              placeholder="State"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+
+            <input
+              formControlName="postalCode"
+              placeholder="Postal Code"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+
+            <input
+              formControlName="country"
+              placeholder="Country"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+
+          <h3 class="text-xl font-semibold mb-4">
+            Change Password
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <input
+              formControlName="password"
+              type="password"
+              placeholder="New Password"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+
+            <input
+              formControlName="confirmPassword"
+              type="password"
+              placeholder="Confirm Password"
+              class="border border-gray-300 rounded-xl px-4 py-3"
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-4 pt-4">
+
+          <button
+            type="button"
+            (click)="cancelEditing()"
+            class="px-5 py-3 bg-gray-200 rounded-xl hover:bg-gray-300"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="px-5 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <app-toast
+      *ngIf="showToast"
+      [message]="toastMessage"
+      [type]="toastType"
+    >
+    </app-toast>
+
+  </ng-container>
+
+  <!-- No User -->
+  <ng-template #noUser>
+
+    <div class="bg-white p-10 rounded-2xl shadow-sm text-center">
+
+      <h2 class="text-3xl font-bold mb-4">
+        No user signed in
+      </h2>
+
+      <p class="text-gray-600 mb-8">
+        Please sign in to access your profile.
+      </p>
+
+      <a
+        routerLink="/auth?mode=signin"
+        class="inline-block bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700"
+      >
+        Sign In
+      </a>
+    </div>
+  </ng-template>
+</div>

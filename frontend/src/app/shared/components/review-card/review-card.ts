@@ -5,6 +5,7 @@ import { Review } from '../../../core/models/review.model';
 
 @Component({
   selector: 'app-review-card',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './review-card.html',
   styleUrl: './review-card.css',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-
-import categoriesData from '../data/categories.json';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from './api.service';
 import { Category } from '../models/categories.model';
 
 @Injectable({
@@ -9,10 +9,12 @@ import { Category } from '../models/categories.model';
 })
 export class CategoryService {
 
-  categories: Category[] = categoriesData;
+  constructor(private api: ApiService) {}
 
-  getAllCategories(): Category[] {
-    return this.categories;
+  getAllCategories(): Observable<Category[]> {
+    return this.api
+      .get<{ categories?: Category[] } | Category[]>('/categories')
+      .pipe(map(response => Array.isArray(response) ? response : response.categories ?? []));
   }
 
 }

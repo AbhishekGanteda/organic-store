@@ -36,7 +36,7 @@
         <!-- ITEMS -->
         <div class="space-y-10">
 
-          @for(item of cartItems; track item.product.id) {
+          @for(item of cartItems; track item._id) {
 
           <div
             class="grid grid-cols-1 md:grid-cols-[120px_1fr_150px_150px_60px] gap-5 items-center border-b border-gray-200 pb-8"
@@ -101,7 +101,7 @@
 
             <!-- REMOVE -->
             <button
-              (click)="removeItem(item.product.id)"
+              (click)="removeItem(item)"
               class="bg-[#8bc34a] text-md text-white hover:bg-[#76aa3f] transition cursor-pointer"
             >
               Remove

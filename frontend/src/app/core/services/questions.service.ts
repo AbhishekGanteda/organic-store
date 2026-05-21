@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-
-import questionsData from '../data/questions.json';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from './api.service';
 import { Question } from '../models/question.model';
 
 @Injectable({
@@ -9,10 +9,12 @@ import { Question } from '../models/question.model';
 })
 export class QuestionService {
 
-  questions: Question[] = questionsData;
+  constructor(private api: ApiService) {}
 
-  getAllQuestions(): Question[] {
-    return this.questions;
+  getAllQuestions(): Observable<Question[]> {
+    return this.api
+      .get<{ questions?: Question[] } | Question[]>('/questions')
+      .pipe(map(response => Array.isArray(response) ? response : response.questions ?? []));
   }
 
 }

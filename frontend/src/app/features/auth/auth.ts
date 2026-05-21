@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
 import { Toast } from '../../shared/components/toast/toast';
 
@@ -11,7 +11,7 @@ import { Toast } from '../../shared/components/toast/toast';
   templateUrl: './auth.html',
   styleUrl: './auth.css',
 })
-export class Auth {
+export class Auth implements OnInit {
   isLoginMode: boolean = true;
 
   toastMessage: string = '';
@@ -21,10 +21,26 @@ export class Auth {
 
   showToast: boolean = false;
 
+  redirectUrl: string | null = null;
+
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
+
+  ngOnInit() {
+    this.redirectUrl = this.route.snapshot.queryParamMap.get('redirect');
+
+    const mode = this.route.snapshot.queryParamMap.get('mode');
+    if (mode === 'signin') {
+      this.isLoginMode = true;
+    }
+
+    if (this.redirectUrl) {
+      this.triggerToast('Please login to continue to your cart.', 'warning');
+    }
+  }
 
   showLogin() {
     this.isLoginMode = true;
@@ -76,26 +92,20 @@ export class Auth {
       return;
     }
 
-    const success =
-      this.authService.login(
+    this.authService
+      .login(
         this.loginForm.value.email!,
         this.loginForm.value.password!
-      );
-
-    if (success) {
-
-      this.router.navigate(['/']);
-
-    }
-
-    else {
-
-      this.triggerToast(
-        'Invalid credentials',
-        'error'
-      );
-
-    }
+      )
+      .subscribe({
+        next: session => {
+          this.authService.setSession(session);
+          this.router.navigateByUrl(this.redirectUrl || '/');
+        },
+        error: () => {
+          this.triggerToast('Invalid credentials', 'error');
+        }
+      });
 
   }
 
@@ -119,29 +129,24 @@ export class Auth {
 
     }
 
-    const success =
-      this.authService.register({
+    this.authService
+      .register({
         name: this.registerForm.value.name,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
+      })
+      .subscribe({
+        next: session => {
+          this.authService.setSession(session);
+          this.registerForm.reset();
+          this.isLoginMode = true;
+          this.router.navigateByUrl(this.redirectUrl || '/');
+          this.triggerToast('Registration successful.', 'success');
+        },
+        error: () => {
+          this.triggerToast('Unable to register user', 'error');
+        }
       });
-
-    if (success) {
-
-      this.registerForm.reset();
-
-      this.isLoginMode = true;
-
-    }
-
-    else {
-
-      this.triggerToast(
-        'User already exists',
-        'error'
-      );
-
-    }
 
   }
 

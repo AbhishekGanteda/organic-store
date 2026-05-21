@@ -9,6 +9,7 @@ import { Reviews } from './components/reviews/reviews';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [Hero, Features, Products, Categories, Trending, Reviews],
   templateUrl: './home.html',
   styleUrl: './home.css',

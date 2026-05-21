@@ -1,0 +1,328 @@
+<section class="admin-dashboard bg-[#f2f4f8] min-h-screen py-10">
+  <div class="max-w-[1400px] mx-auto px-6">
+    <header class="mb-8">
+      <div class="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+          <p class="mt-2 text-slate-600">Monitor store performance and manage products, users, categories, features, questions, reviews, and orders.</p>
+        </div>
+        <nav class="flex flex-wrap gap-2">
+          <button class="admin-tab" [class.active]="view() === 'summary'" (click)="selectView('summary')">Summary</button>
+          <button class="admin-tab" [class.active]="view() === 'users'" (click)="selectView('users')">Users</button>
+          <button class="admin-tab" [class.active]="view() === 'products'" (click)="selectView('products')">Products</button>
+          <button class="admin-tab" [class.active]="view() === 'categories'" (click)="selectView('categories')">Categories</button>
+          <button class="admin-tab" [class.active]="view() === 'features'" (click)="selectView('features')">Features</button>
+          <button class="admin-tab" [class.active]="view() === 'questions'" (click)="selectView('questions')">Questions</button>
+          <button class="admin-tab" [class.active]="view() === 'reviews'" (click)="selectView('reviews')">Reviews</button>
+          <button class="admin-tab" [class.active]="view() === 'orders'" (click)="selectView('orders')">Orders</button>
+        </nav>
+      </div>
+    </header>
+
+    @if (view() === 'summary') {
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-8">
+      <article class="dashboard-card">
+        <h2>Total Users</h2>
+        <p>{{ summary.users || 0 }}</p>
+      </article>
+      <article class="dashboard-card">
+        <h2>Total Orders</h2>
+        <p>{{ summary.orders || 0 }}</p>
+      </article>
+      <article class="dashboard-card">
+        <h2>Total Products</h2>
+        <p>{{ summary.products || 0 }}</p>
+      </article>
+      <article class="dashboard-card">
+        <h2>Total Revenue</h2>
+        <p>${{ summary.revenue?.toFixed(2) || 0 }}</p>
+      </article>
+    </div>
+    }
+
+    @if (view() === 'users') {
+    <section class="admin-section">
+      <h2>Manage Users</h2>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users; track user._id) {
+            <tr>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.createdAt | date:'mediumDate' }}</td>
+              <td class="actions-cell">
+                <button class="action-button" (click)="toggleUserRole(user)">
+                  {{ user.role === 'admin' ? 'Demote' : 'Promote' }}
+                </button>
+                <button class="danger-button" (click)="deleteUser(user._id)">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+
+    @if (view() === 'products') {
+    <section class="admin-section">
+      <h2>Manage Products</h2>
+      <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
+          <h3>Create Product</h3>
+          <input type="text" placeholder="Name" [(ngModel)]="newProduct.name" />
+          <input type="number" placeholder="Price" [(ngModel)]="newProduct.price" />
+          <input type="number" placeholder="Original Price" [(ngModel)]="newProduct.originalPrice" />
+          <input type="text" placeholder="Image URL" [(ngModel)]="newProduct.image" />
+          <select [(ngModel)]="newProduct.category">
+            <option value="">Select category</option>
+            @for (c of categories; track c._id) {
+            <option [value]="c.name">{{ c.name }}</option>
+            }
+          </select>
+          <textarea rows="2" placeholder="Description" [(ngModel)]="newProduct.description"></textarea>
+          <input type="text" placeholder="Tags (comma separated)" [(ngModel)]="newProduct.tags" />
+          <div class="flex gap-2">
+            <label><input type="checkbox" [(ngModel)]="newProduct.isSale" /> Sale</label>
+            <label><input type="checkbox" [(ngModel)]="newProduct.isTrending" /> Trending</label>
+            <label><input type="checkbox" [(ngModel)]="newProduct.isBestSeller" /> Best Seller</label>
+          </div>
+          <button class="primary-button" (click)="createProduct()">Create</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products; track product._id) {
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>${{ product.price }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.createdAt | date:'mediumDate' }}</td>
+              <td class="actions-cell">
+                <button class="danger-button" (click)="deleteProduct(product._id)">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+
+    @if (view() === 'categories') {
+    <section class="admin-section">
+      <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
+        <h2>Manage Categories</h2>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
+          <h3>Create Category</h3>
+          <input type="text" placeholder="Name" [(ngModel)]="newCategory.name" />
+          <input type="text" placeholder="Image URL" [(ngModel)]="newCategory.image" />
+          <textarea rows="2" placeholder="Description" [(ngModel)]="newCategory.description"></textarea>
+          <button class="primary-button" (click)="addCategory()">Create</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (category of categories; track category._id) {
+            <tr>
+              <td>{{ category.name }}</td>
+              <td>{{ category.description }}</td>
+              <td class="actions-cell">
+                <button class="danger-button" (click)="deleteCategory(category._id)">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+
+    @if (view() === 'features') {
+    <section class="admin-section">
+      <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
+        <h2>Manage Features</h2>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
+          <h3>Create Feature</h3>
+          <input type="text" placeholder="Name" [(ngModel)]="newFeature.name" />
+          <input type="text" placeholder="Icon" [(ngModel)]="newFeature.icon" />
+          <textarea rows="2" placeholder="Description" [(ngModel)]="newFeature.description"></textarea>
+          <button class="primary-button" (click)="addFeature()">Create</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Icon</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (feature of features; track feature._id) {
+            <tr>
+              <td>{{ feature.name }}</td>
+              <td>{{ feature.icon }}</td>
+              <td>{{ feature.description }}</td>
+              <td class="actions-cell">
+                <button class="danger-button" (click)="deleteFeature(feature._id)">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+
+    @if (view() === 'questions') {
+    <section class="admin-section">
+      <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
+        <h2>Manage Questions</h2>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
+          <h3>Create Question</h3>
+          <input type="text" placeholder="Question" [(ngModel)]="newQuestion.question" />
+          <textarea rows="2" placeholder="Answer" [(ngModel)]="newQuestion.answer"></textarea>
+          <select [(ngModel)]="newQuestion.isOpen">
+            <option [ngValue]="true">Open</option>
+            <option [ngValue]="false">Closed</option>
+          </select>
+          <button class="primary-button" (click)="addQuestion()">Create</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Answer</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (question of questions; track question._id) {
+            <tr>
+              <td>{{ question.question }}</td>
+              <td>{{ question.answer }}</td>
+              <td>{{ question.isOpen ? 'Open' : 'Closed' }}</td>
+              <td class="actions-cell">
+                <button class="danger-button" (click)="deleteQuestion(question._id)">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+
+    @if (view() === 'reviews') {
+    <section class="admin-section">
+      <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
+        <h2>Manage Reviews</h2>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
+          <h3>Create Review</h3>
+          <input type="text" placeholder="Name" [(ngModel)]="newReview.name" />
+          <input type="text" placeholder="Image URL" [(ngModel)]="newReview.image" />
+          <textarea rows="2" placeholder="Review" [(ngModel)]="newReview.review"></textarea>
+          <input type="number" min="1" max="5" [(ngModel)]="newReview.rating" />
+          <button class="primary-button" (click)="addReview()">Create</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Review</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (review of reviews; track review._id) {
+            <tr>
+              <td>{{ review.name }}</td>
+              <td>{{ review.review }}</td>
+              <td>{{ review.rating }}</td>
+              <td class="actions-cell">
+                <button class="danger-button" (click)="deleteReview(review._id)">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+
+    @if (view() === 'orders') {
+    <section class="admin-section">
+      <h2>Manage Orders</h2>
+      <div class="overflow-x-auto mt-4">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Update</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of orders; track order._id) {
+            <tr>
+              <td>{{ order._id }}</td>
+              <td>{{ order.user?.email || order.user?.name || 'Unknown' }}</td>
+              <td>${{ order.totalPrice }}</td>
+              <td>{{ order.status }}</td>
+              <td class="actions-cell">
+                <select [(ngModel)]="selectedOrderStatus[order._id]">
+                  @for (status of statusOptions; track status) {
+                  <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+                <button class="primary-button" (click)="updateOrderStatus(order._id)">Save</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    }
+  </div>
+</section>

@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-categories-card',
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './categories-card.html',
   styleUrl: './categories-card.css',

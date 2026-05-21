@@ -21,43 +21,37 @@ export class Cart {
   ) {}
 
   ngOnInit() {
-
-    this.cartItems =
-      this.cartService.getCartItems();
-
+    this.cartService.getCartItems().subscribe(items => {
+      this.cartItems = items;
+    });
   }
 
   increaseQuantity(item: CartItem) {
-
-    item.quantity++;
-
+    if (!item._id) {
+      return;
+    }
+    this.cartService.updateCartItem(item._id, item.quantity + 1).subscribe();
   }
 
   decreaseQuantity(item: CartItem) {
-
-    if (item.quantity > 1) {
-      item.quantity--;
+    if (!item._id || item.quantity <= 1) {
+      return;
     }
-
+    this.cartService.updateCartItem(item._id, item.quantity - 1).subscribe();
   }
 
-  removeItem(productId: number) {
-
-    this.cartService.removeFromCart(productId);
-
-    this.cartItems =
-      this.cartService.getCartItems();
-
+  removeItem(item: CartItem) {
+    if (!item._id) {
+      return;
+    }
+    this.cartService.removeFromCart(item._id).subscribe();
   }
 
   getSubtotal(): number {
-
     return this.cartItems.reduce(
-      (total, item) =>
-        total + (item.product.price * item.quantity),
+      (total, item) => total + (item.product.price * item.quantity),
       0
     );
-
   }
 
 }

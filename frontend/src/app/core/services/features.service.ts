@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-
-import featuresData from '../data/features.json';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from './api.service';
 import { Feature } from '../models/feature.model';
 
 @Injectable({
@@ -9,10 +9,12 @@ import { Feature } from '../models/feature.model';
 })
 export class FeatureService {
 
-  features: Feature[] = featuresData;
+  constructor(private api: ApiService) {}
 
-  getAllFeatures(): Feature[] {
-    return this.features;
+  getAllFeatures(): Observable<Feature[]> {
+    return this.api
+      .get<{ features?: Feature[] } | Feature[]>('/features')
+      .pipe(map(response => Array.isArray(response) ? response : response.features ?? []));
   }
 
 }

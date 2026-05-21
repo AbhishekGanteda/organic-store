@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Question } from '../../core/models/question.model';
@@ -16,8 +16,14 @@ export class Contact {
 
   questions: Question[] = [];
 
-  constructor(private questionService: QuestionService) {
-    this.questions = this.questionService.getAllQuestions();
+  constructor(
+    private questionService: QuestionService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.questionService.getAllQuestions().subscribe(questions => {
+      this.questions = questions;
+      this.cdr.detectChanges();
+    });
   }
 
 }

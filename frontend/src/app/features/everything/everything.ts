@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,80 +26,45 @@ export class Everything {
   selectedCategory: string = 'All';
 
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
   ) {
+    this.productService.getAllProducts().subscribe(products => {
+      this.products = products;
+      this.filteredProducts = products;
+      this.cdr.detectChanges();
+    });
 
-    this.products =
-      this.productService.getAllProducts();
-
-    this.filteredProducts =
-      this.products;
-
-    this.saleProducts =
-      this.productService.getSaleProducts();
-
+    this.productService.getSaleProducts().subscribe(products => {
+      this.saleProducts = products;
+      this.cdr.detectChanges();
+    });
   }
 
   filterProducts() {
-
-    this.filteredProducts =
-      this.products.filter(product => {
-
-        const matchesSearch =
-          product.name
-            .toLowerCase()
-            .includes(
-              this.searchText.toLowerCase()
-            );
-
-        const matchesCategory =
-          this.selectedCategory === 'All'
-          ||
-          product.category === this.selectedCategory;
-
-        return matchesSearch && matchesCategory;
-
-      });
-
+    this.filteredProducts = this.products.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(this.searchText.toLowerCase());
+      const matchesCategory = this.selectedCategory === 'All' || product.category === this.selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
   }
 
   selectCategory(category: string) {
-
     this.selectedCategory = category;
-
     this.filterProducts();
-
   }
 
   sortProducts(event: Event) {
-
-    const sortBy =
-      (event.target as HTMLSelectElement).value;
+    const sortBy = (event.target as HTMLSelectElement).value;
 
     if (sortBy === 'price') {
-
-      this.filteredProducts.sort(
-        (a, b) => a.price - b.price
-      );
-
-    }
-
-    else if (sortBy === 'popularity') {
-
-      this.filteredProducts.sort(
-        (a, b) => b.rating - a.rating
-      );
-
-    }
-
-    else {
-
-      this.filteredProducts =
-        [...this.products];
+      this.filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'popularity') {
+      this.filteredProducts.sort((a, b) => b.rating - a.rating);
+    } else {
+      this.filteredProducts = [...this.products];
       this.filterProducts();
-
     }
-
   }
 
 }

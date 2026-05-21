@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -15,40 +15,35 @@ import { CartService } from '../../core/services/cart';
 })
 export class ProductDetails {
 
-  product!: Product;
-
+  product?: Product;
   relatedProducts: Product[] = [];
-
   quantity: number = 1;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartService
-  ) { }
+    private cartService: CartService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-
-    this.route.url.subscribe(url => {
-      console.log(url);
-    });
-
     this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (!id) {
+        return;
+      }
 
-      const id =
-        Number(params.get('id'));
+      this.productService.getProductById(id).subscribe(product => {
+        this.product = product;
 
-      this.product =
-        this.productService.getProductById(id);
+        this.productService.getRelatedProducts(product.category, id).subscribe(products => {
+          this.relatedProducts = products.filter(p => p.id !== id).slice(0, 3);
+          this.cdr.detectChanges();
+        });
 
-      this.relatedProducts =
-        this.productService.getRelatedProducts(
-          this.product.category,
-          id
-        );
-
+        this.cdr.detectChanges();
+      });
     });
-
   }
 
   increaseQuantity() {
@@ -56,19 +51,17 @@ export class ProductDetails {
   }
 
   decreaseQuantity() {
-
     if (this.quantity > 1) {
       this.quantity--;
     }
-
   }
 
   addToCart() {
-    this.cartService.addToCart(
-      this.product,
-      this.quantity
-    );
+    if (!this.product) {
+      return;
+    }
 
+    this.cartService.addToCart(this.product.id, this.quantity).subscribe();
   }
 
 }

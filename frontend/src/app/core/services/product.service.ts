@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-
-import productsData from '../data/products.json';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from './api.service';
 import { Product } from '../models/product.model';
 
 @Injectable({
@@ -9,57 +9,51 @@ import { Product } from '../models/product.model';
 })
 export class ProductService {
 
-  products: Product[] = productsData;
+  constructor(private api: ApiService) {}
 
-  getAllProducts(): Product[] {
-    return this.products;
+  getAllProducts(search = '', category = 'All', sort = ''): Observable<Product[]> {
+    const queryParams = [];
+    if (category && category !== 'All') {
+      queryParams.push(`category=${encodeURIComponent(category)}`);
+    }
+    if (search) {
+      queryParams.push(`search=${encodeURIComponent(search)}`);
+    }
+    if (sort) {
+      queryParams.push(`sort=${encodeURIComponent(sort)}`);
+    }
+    const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+    return this.api
+      .get<{ products: Product[] }>(`/products${queryString}`)
+      .pipe(map(response => response.products));
   }
 
-  getProductById(id: number): Product {
-
-    return this.products.find(
-      product => product.id === id
-    )!;
-
+  getProductById(id: number): Observable<Product> {
+    return this.api.get<Product>(`/products/${id}`);
   }
 
-  getTrendingProducts(): Product[] {
-
-    return this.products.filter(
-      product => product.isTrending
-    );
-
+  getTrendingProducts(): Observable<Product[]> {
+    return this.api
+      .get<{ products: Product[] }>(`/products?trending=true&limit=8`)
+      .pipe(map(response => response.products));
   }
 
-  getProductsByCategory(category: string): Product[] {
-
-    return this.products.filter(
-      product =>
-        product.category.toLowerCase() ===
-        category.toLowerCase()
-    );
-
+  getProductsByCategory(category: string): Observable<Product[]> {
+    return this.api
+      .get<{ products: Product[] }>(`/products?category=${encodeURIComponent(category)}`)
+      .pipe(map(response => response.products));
   }
 
-  getSaleProducts(): Product[] {
-
-    return this.products.filter(
-      product => product.isSale
-    );
-
+  getSaleProducts(): Observable<Product[]> {
+    return this.api
+      .get<{ products: Product[] }>(`/products?sale=true&limit=8`)
+      .pipe(map(response => response.products));
   }
 
-  getRelatedProducts(
-    category: string,
-    currentId: number
-  ): Product[] {
-
-    return this.products
-      .filter(product =>
-        product.category === category &&
-        product.id !== currentId
-      )
-      .slice(0, 3);
+  getRelatedProducts(category: string, currentId: number): Observable<Product[]> {
+    return this.api
+      .get<{ products: Product[] }>(`/products?category=${encodeURIComponent(category)}&limit=8`)
+      .pipe(map(response => response.products));
   }
 
 }
