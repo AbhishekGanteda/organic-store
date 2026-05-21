@@ -1,0 +1,23 @@
+<div class="border-b border-gray-300 pb-8">
+
+    <!-- QUESTION -->
+    <button class="w-full flex justify-between items-center text-left" (click)="toggleFaq(question)">
+
+        <span class="text-lg font-semibold">
+            {{ question.question }}
+        </span>
+
+        <i class="fa-solid" [class.fa-chevron-down]="!question.isOpen" [class.fa-chevron-up]="question.isOpen"></i>
+
+    </button>
+
+    <!-- ANSWER -->
+    @if(question.isOpen) {
+
+    <p class="text-gray-600 text-lg leading-10 mt-6">
+        {{ question.answer }}
+    </p>
+
+    }
+
+</div>

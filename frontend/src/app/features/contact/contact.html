@@ -87,38 +87,9 @@
     <!-- FAQ GRID -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
 
-      @for(faq of faqItems; track faq.question; let i = $index) {
+      @for(question of questions; track question.id; let i = $index) {
 
-      <div class="border-b border-gray-300 pb-8">
-
-        <!-- QUESTION -->
-        <button
-          class="w-full flex justify-between items-center text-left"
-          (click)="toggleFaq(i)"
-        >
-
-          <span class="text-lg font-semibold">
-            {{ faq.question }}
-          </span>
-
-          <i
-            class="fa-solid"
-            [class.fa-chevron-down]="!faq.isOpen"
-            [class.fa-chevron-up]="faq.isOpen"
-          ></i>
-
-        </button>
-
-        <!-- ANSWER -->
-        @if(faq.isOpen) {
-
-        <p class="text-gray-600 text-lg leading-10 mt-6">
-          {{ faq.answer }}
-        </p>
-
-        }
-
-      </div>
+      <app-question-card [question]="question"/>
 
       }
 

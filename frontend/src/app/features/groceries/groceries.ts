@@ -3,12 +3,11 @@ import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-groceries',
-  imports: [CommonModule, FormsModule, RouterLink, ProductCard],
+  imports: [CommonModule, FormsModule, ProductCard],
   templateUrl: './groceries.html',
   styleUrl: './groceries.css',
 })

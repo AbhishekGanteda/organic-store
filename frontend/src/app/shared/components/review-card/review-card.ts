@@ -1,12 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 import { Review } from '../../../core/models/review.model';
 
 @Component({
   selector: 'app-review-card',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './review-card.html',
   styleUrl: './review-card.css',
 })

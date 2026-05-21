@@ -1,0 +1,19 @@
+<div class="bg-white relative w-full h-[350px]   group overflow-hidden rounded-lg">
+  
+        <img 
+        [src]="category.image"
+        class="absolute bottom-0 right-0 scale-70 origin-bottom-right transition-transform duration-500 group-hover:scale-80"
+        />
+  
+        <!-- Content -->
+        <div class="absolute mt-8 ml-8 flex flex-col justify-start items-start text-left px-4 space-y-4">
+          <h2 class="text-2xl font-bold">{{ category.name }}</h2>
+          <p class="text-sm">{{ category.description }}</p>
+  
+          <button routerLink="/everything" class="bg-[#6A9739] text-white font-['Open_Sans'] font-bold hover:bg-[#8BC34A] px-5 py-3 rounded flex items-center gap-2 cursor-pointer">
+              SHOP NOW
+              <span class="material-icons">arrow_forward</span>
+          </button>
+        </div>
+  
+      </div>
