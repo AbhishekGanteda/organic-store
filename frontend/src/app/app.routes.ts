@@ -63,5 +63,11 @@ export const routes: Routes = [
       import('./features/cart/cart')
         .then(m => m.Cart),
     canMatch: [AuthGuard]
+  },
+  {
+    path: 'checkout',
+    loadComponent: () =>
+      import('./layout/order-success/order-success')
+        .then(m => m.OrderSuccess)
   }
 ];
