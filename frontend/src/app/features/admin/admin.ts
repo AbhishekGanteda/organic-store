@@ -24,14 +24,16 @@ export type AdminView =
 export class Admin implements OnInit {
   view = signal<AdminView>('summary');
   hasAdminAccess = false;
-  summary: any = {};
-  users: any[] = [];
-  products: any[] = [];
-  categories: any[] = [];
-  features: any[] = [];
-  questions: any[] = [];
-  reviews: any[] = [];
-  orders: any[] = [];
+  isSessionReady = false;
+  pendingView: AdminView | null = null;
+  summary = signal<any>({});
+  users = signal<any[]>([]);
+  products = signal<any[]>([]);
+  categories = signal<any[]>([]);
+  features = signal<any[]>([]);
+  questions = signal<any[]>([]);
+  reviews = signal<any[]>([]);
+  orders = signal<any[]>([]);
 
   newCategory: any = { name: '', image: '', description: '' };
   newFeature: any = { name: '', icon: '', description: '' };
@@ -39,7 +41,7 @@ export class Admin implements OnInit {
   newReview: any = { name: '', image: '', review: '', rating: 5 };
   newProduct: any = { name: '', price: 0, originalPrice: 0, image: '', category: '', description: '', isSale: false, tags: '', isTrending: false, isBestSeller: false };
 
-  statusOptions = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+  statusOptions = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
   selectedOrderStatus: Record<string, string> = {};
 
   constructor(
@@ -49,12 +51,24 @@ export class Admin implements OnInit {
 
   ngOnInit() {
     this.verifyAdminSession(() => {
+      this.isSessionReady = true;
       this.loadSummary();
+
+      if (this.pendingView && this.pendingView !== 'summary') {
+        const nextView = this.pendingView;
+        this.pendingView = null;
+        this.selectView(nextView);
+      }
     });
   }
 
   selectView(view: AdminView) {
     this.view.set(view);
+
+    if (!this.isSessionReady) {
+      this.pendingView = view;
+      return;
+    }
 
     if (!this.hasAdminAccess) {
       return;
@@ -118,7 +132,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getSummary().subscribe(summary => {
-      this.summary = summary;
+      this.summary.set(summary);
     });
   }
 
@@ -128,7 +142,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getUsers().subscribe(users => {
-      this.users = users;
+      this.users.set(users);
     });
   }
 
@@ -138,7 +152,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getProducts().subscribe(products => {
-      this.products = products;
+      this.products.set(products);
     });
   }
 
@@ -155,7 +169,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.createProduct(payload).subscribe(product => {
-      this.products = [product, ...this.products];
+      this.products.update(products => [product, ...products]);
       this.newProduct = { name: '', price: 0, originalPrice: 0, image: '', category: '', description: '', isSale: false, tags: '', isTrending: false, isBestSeller: false };
     });
   }
@@ -166,7 +180,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getCategories().subscribe(categories => {
-      this.categories = categories;
+      this.categories.set(categories);
     });
   }
 
@@ -176,7 +190,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getFeatures().subscribe(features => {
-      this.features = features;
+      this.features.set(features);
     });
   }
 
@@ -186,7 +200,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getQuestions().subscribe(questions => {
-      this.questions = questions;
+      this.questions.set(questions);
     });
   }
 
@@ -196,7 +210,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getReviews().subscribe(reviews => {
-      this.reviews = reviews;
+      this.reviews.set(reviews);
     });
   }
 
@@ -206,8 +220,8 @@ export class Admin implements OnInit {
     }
 
     this.adminService.getOrders().subscribe(orders => {
-      this.orders = orders;
-      this.orders.forEach(order => {
+      this.orders.set(orders);
+      orders.forEach(order => {
         this.selectedOrderStatus[order._id] = order.status;
       });
     });
@@ -219,7 +233,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.deleteUser(id).subscribe(() => {
-      this.users = this.users.filter(user => user._id !== id);
+      this.users.update(users => users.filter(user => user._id !== id));
     });
   }
 
@@ -229,7 +243,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.deleteProduct(id).subscribe(() => {
-      this.products = this.products.filter(product => product._id !== id);
+      this.products.update(products => products.filter(product => product._id !== id));
     });
   }
 
@@ -239,7 +253,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.deleteCategory(id).subscribe(() => {
-      this.categories = this.categories.filter(category => category._id !== id);
+      this.categories.update(categories => categories.filter(category => category._id !== id));
     });
   }
 
@@ -250,7 +264,7 @@ export class Admin implements OnInit {
 
     if (!this.newCategory.name.trim()) return;
     this.adminService.createCategory(this.newCategory).subscribe(category => {
-      this.categories = [category, ...this.categories];
+      this.categories.update(categories => [category, ...categories]);
       this.newCategory = { name: '', image: '', description: '' };
     });
   }
@@ -261,7 +275,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.deleteFeature(id).subscribe(() => {
-      this.features = this.features.filter(feature => feature._id !== id);
+      this.features.update(features => features.filter(feature => feature._id !== id));
     });
   }
 
@@ -272,7 +286,7 @@ export class Admin implements OnInit {
 
     if (!this.newFeature.name.trim()) return;
     this.adminService.createFeature(this.newFeature).subscribe(feature => {
-      this.features = [feature, ...this.features];
+      this.features.update(features => [feature, ...features]);
       this.newFeature = { name: '', icon: '', description: '' };
     });
   }
@@ -283,7 +297,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.deleteQuestion(id).subscribe(() => {
-      this.questions = this.questions.filter(question => question._id !== id);
+      this.questions.update(questions => questions.filter(question => question._id !== id));
     });
   }
 
@@ -294,7 +308,7 @@ export class Admin implements OnInit {
 
     if (!this.newQuestion.question.trim()) return;
     this.adminService.createQuestion(this.newQuestion).subscribe(question => {
-      this.questions = [question, ...this.questions];
+      this.questions.update(questions => [question, ...questions]);
       this.newQuestion = { question: '', answer: '', isOpen: true };
     });
   }
@@ -305,7 +319,7 @@ export class Admin implements OnInit {
     }
 
     this.adminService.deleteReview(id).subscribe(() => {
-      this.reviews = this.reviews.filter(review => review._id !== id);
+      this.reviews.update(reviews => reviews.filter(review => review._id !== id));
     });
   }
 
@@ -316,7 +330,7 @@ export class Admin implements OnInit {
 
     if (!this.newReview.name.trim() || !this.newReview.review.trim()) return;
     this.adminService.createReview(this.newReview).subscribe(review => {
-      this.reviews = [review, ...this.reviews];
+      this.reviews.update(reviews => [review, ...reviews]);
       this.newReview = { name: '', image: '', review: '', rating: 5 };
     });
   }
@@ -328,7 +342,10 @@ export class Admin implements OnInit {
 
     const newStatus = this.selectedOrderStatus[orderId];
     this.adminService.updateOrderStatus(orderId, { status: newStatus }).subscribe(order => {
-      this.orders = this.orders.map(item => (item._id === order._id ? order : item));
+      this.orders.update(orders => orders.map(item => (item._id === order._id ? order : item)));
+      this.selectedOrderStatus[order._id] = order.status;
+    }, () => {
+      this.selectedOrderStatus[orderId] = this.orders().find(item => item._id === orderId)?.status || this.selectedOrderStatus[orderId];
     });
   }
 
@@ -339,7 +356,8 @@ export class Admin implements OnInit {
 
     const newRole = user.role === 'admin' ? 'user' : 'admin';
     this.adminService.updateUser(user._id, { role: newRole }).subscribe(updated => {
-      this.users = this.users.map(u => (u._id === updated._id ? updated : u));
+      const updatedId = updated?._id ?? updated?.id;
+      this.users.update(users => users.map(u => (u._id === updatedId ? { ...u, ...updated, _id: updatedId } : u)));
     });
   }
 }

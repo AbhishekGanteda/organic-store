@@ -1,0 +1,123 @@
+<section class="checkout-shell">
+  @if (orderPlaced()) {
+  <div class="checkout-card success-card">
+    <div class="success-icon">
+      <span class="material-icons">check_circle</span>
+    </div>
+
+    <p class="eyebrow">Order placed</p>
+    <h1>Your order is on its way to processing</h1>
+    <p class="lead">
+      We saved your order in the backend and cleared your cart. You can follow it from the orders page.
+    </p>
+
+    <div class="order-summary-grid">
+      <div>
+        <span>Order ID</span>
+        <strong>{{ orderPlaced()?._id }}</strong>
+      </div>
+      <div>
+        <span>Status</span>
+        <strong class="status-pill">{{ orderPlaced()?.status }}</strong>
+      </div>
+      <div>
+        <span>Total</span>
+        <strong>${{ orderPlaced()?.totalPrice }}</strong>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/orders" class="primary-action">View Orders</a>
+      <button type="button" (click)="continueShopping()" class="secondary-action">Continue Shopping</button>
+    </div>
+  </div>
+  } @else {
+  <div class="checkout-grid">
+    <div class="checkout-card">
+      <p class="eyebrow">Checkout</p>
+      <h1>Shipping details</h1>
+      <p class="lead">Use your saved profile address or enter a new one before placing the order.</p>
+
+      <form [formGroup]="shippingForm" (ngSubmit)="placeOrder()" class="shipping-form">
+        <div class="form-row two-col">
+          <label>
+            <span>Address label</span>
+            <input formControlName="label" type="text" placeholder="Home" />
+          </label>
+          <label>
+            <span>Street</span>
+            <input formControlName="street" type="text" placeholder="123 Green Street" />
+          </label>
+        </div>
+
+        <div class="form-row two-col">
+          <label>
+            <span>City</span>
+            <input formControlName="city" type="text" placeholder="Austin" />
+          </label>
+          <label>
+            <span>State</span>
+            <input formControlName="state" type="text" placeholder="Texas" />
+          </label>
+        </div>
+
+        <div class="form-row two-col">
+          <label>
+            <span>Postal code</span>
+            <input formControlName="postalCode" type="text" placeholder="78701" />
+          </label>
+          <label>
+            <span>Country</span>
+            <input formControlName="country" type="text" placeholder="United States" />
+          </label>
+        </div>
+
+        @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        <button type="submit" class="primary-action full-width" [disabled]="isPlacingOrder()">
+          {{ isPlacingOrder() ? 'Placing Order...' : 'Place Order' }}
+        </button>
+      </form>
+    </div>
+
+    <aside class="checkout-card summary-card">
+      <p class="eyebrow">Order summary</p>
+      <h2>{{ cartItems().length }} item{{ cartItems().length === 1 ? '' : 's' }}</h2>
+
+      <div class="summary-items">
+        @for (item of cartItems(); track item._id) {
+        <div class="summary-item">
+          <div>
+            <strong>{{ item.product.name }}</strong>
+            <span>Qty {{ item.quantity }}</span>
+          </div>
+          <span>${{ item.product.price * item.quantity }}</span>
+        </div>
+        }
+      </div>
+
+      <div class="summary-totals">
+        <div>
+          <span>Subtotal</span>
+          <strong>${{ getSubtotal() }}</strong>
+        </div>
+        <div>
+          <span>Shipping</span>
+          <strong>Free</strong>
+        </div>
+        <div class="grand-total">
+          <span>Total</span>
+          <strong>${{ getSubtotal() }}</strong>
+        </div>
+      </div>
+
+      @if (!cartItems().length) {
+      <p class="empty-note">Your cart is empty. Add products before checking out.</p>
+      <a routerLink="/everything" class="secondary-action full-width">Continue Shopping</a>
+      }
+    </aside>
+  </div>
+  }
+</section>

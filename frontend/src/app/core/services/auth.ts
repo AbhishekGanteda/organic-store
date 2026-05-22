@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -7,12 +7,15 @@ import { ApiService } from './api.service';
 })
 export class AuthService {
 
-  // Expose current user as a BehaviorSubject so UI can react to session changes
-  currentUser$ = new BehaviorSubject<any>(
-    JSON.parse(localStorage.getItem('currentUser') || 'null')
-  );
+  private readonly tokenKey = 'token';
+  private readonly currentUserKey = 'currentUser';
+  private readonly storage = sessionStorage;
 
-  constructor(private api: ApiService) {}
+  currentUser = signal<any>(null);
+
+  constructor(private api: ApiService) {
+    this.restoreSession();
+  }
 
   register(userData: any): Observable<{ user: any; token: string }> {
     return this.api.post<{ user: any; token: string }>('/auth/register', userData);
@@ -27,32 +30,66 @@ export class AuthService {
   }
 
   updateCurrentUser(user: any): void {
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    this.currentUser$.next(user);
+    this.storage.setItem(this.currentUserKey, JSON.stringify(user));
+    this.currentUser.set(user);
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
-    this.currentUser$.next(null);
+    this.clearSession();
   }
 
   setSession(data: { user: any; token: string }): void {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('currentUser', JSON.stringify(data.user));
-    this.currentUser$.next(data.user);
+    this.storage.setItem(this.tokenKey, data.token);
+    this.storage.setItem(this.currentUserKey, JSON.stringify(data.user));
+    this.currentUser.set(data.user);
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    const token = this.storage.getItem(this.tokenKey);
+    return !!token && !this.isTokenExpired(token);
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!this.isLoggedIn()) {
+      return null;
+    }
+
+    return this.currentUser();
   }
 
   fetchCurrentUser() {
     return this.api.get<any>('/auth/me');
+  }
+
+  private restoreSession(): void {
+    const token = this.storage.getItem(this.tokenKey);
+    const currentUser = this.storage.getItem(this.currentUserKey);
+
+    if (!token || this.isTokenExpired(token) || !currentUser) {
+      this.clearSession();
+      return;
+    }
+
+    try {
+      this.currentUser.set(JSON.parse(currentUser));
+    } catch {
+      this.clearSession();
+    }
+  }
+
+  private clearSession(): void {
+    this.storage.removeItem(this.tokenKey);
+    this.storage.removeItem(this.currentUserKey);
+    this.currentUser.set(null);
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return !payload?.exp || Date.now() >= payload.exp * 1000;
+    } catch {
+      return true;
+    }
   }
 
 }

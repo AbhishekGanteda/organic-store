@@ -1,0 +1,91 @@
+<section class="orders-page">
+  <div class="orders-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Account</p>
+      <h1>Your orders</h1>
+      <p class="hero-text">
+        Review every order placed from your account and check its current status.
+      </p>
+
+      <div class="hero-stats">
+        <div>
+          <span>Orders</span>
+          <strong>{{ orderCount() }}</strong>
+        </div>
+        <div>
+          <span>Most recent</span>
+          <strong>{{ mostRecentOrderDate() }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a routerLink="/everything" class="secondary-action">Continue Shopping</a>
+      <a routerLink="/checkout" class="primary-action">Go to Checkout</a>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+  <div class="state-card">Loading your order history...</div>
+  } @else if (errorMessage()) {
+  <div class="state-card error">{{ errorMessage() }}</div>
+  } @else if (!orders().length) {
+  <div class="state-card empty">
+    <h2>No orders yet</h2>
+    <p>Once you place an order, it will show up here with the full history.</p>
+    <a routerLink="/everything" class="primary-action">Start Shopping</a>
+  </div>
+  } @else {
+  <div class="orders-list">
+    @for (order of orders(); track order._id) {
+    <article class="order-card">
+      <div class="order-card-header">
+        <div class="order-title-block">
+          <p class="eyebrow">Order {{ order._id.slice(-6) }}</p>
+          <h2>{{ getOrderDate(order) }}</h2>
+          <p class="order-address">
+            {{ order.shippingAddress?.label || 'Shipping' }}
+            @if (order.shippingAddress?.city) {
+            · {{ order.shippingAddress?.city }}
+            }
+          </p>
+        </div>
+
+        <div class="header-meta">
+          <span class="status status-{{ order.status }}">{{ order.status }}</span>
+          <strong>${{ order.totalPrice }}</strong>
+        </div>
+      </div>
+
+      <div class="order-meta-grid">
+        <div class="meta-chip">
+          <span>Items</span>
+          <strong>{{ order.items.length }}</strong>
+        </div>
+        <div class="meta-chip">
+          <span>Recipient</span>
+          <strong>{{ getCustomerName(order) }}</strong>
+        </div>
+        <div class="meta-chip">
+          <span>City</span>
+          <strong>{{ order.shippingAddress?.city || 'N/A' }}</strong>
+        </div>
+      </div>
+
+      <div class="items-grid">
+        @for (item of order.items; track item._id) {
+        <div class="item-row">
+          <img [src]="getProductImage(item)" [alt]="getProductName(item)" />
+          <div class="item-copy">
+            <strong>{{ getProductName(item) }}</strong>
+            <span>Quantity {{ item.quantity }}</span>
+          </div>
+          <strong class="item-price">${{ item.price * item.quantity }}</strong>
+        </div>
+        }
+      </div>
+    </article>
+    }
+  </div>
+  }
+</section>

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Injectable, computed, effect, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { CartItem } from '../models/cart-item';
@@ -10,17 +10,19 @@ import { AuthService } from './auth';
 })
 export class CartService {
 
-  private cartSubject = new BehaviorSubject<CartItem[]>([]);
-  public cart$ = this.cartSubject.asObservable();
+  readonly cartItems = signal<CartItem[]>([]);
+  readonly cartCount = computed(() =>
+    this.cartItems().reduce((total, item) => total + item.quantity, 0)
+  );
 
   constructor(
     private api: ApiService,
     private authService: AuthService
   ) {
-    this.authService.currentUser$.subscribe(user => {
+    effect(() => {
+      this.authService.currentUser();
       this.refreshCart();
     });
-    this.refreshCart();
   }
 
   private normalizeCartResponse(response: any): CartItem[] {
@@ -38,59 +40,41 @@ export class CartService {
 
   private refreshCart(): void {
     if (!this.authService.isLoggedIn()) {
-      this.cartSubject.next([]);
+      this.cartItems.set([]);
       return;
     }
 
     this.api.get<any>('/cart').subscribe({
-      next: items => this.cartSubject.next(this.normalizeCartResponse(items)),
-      error: () => this.cartSubject.next([]),
+      next: items => this.cartItems.set(this.normalizeCartResponse(items)),
+      error: () => this.cartItems.set([]),
     });
-  }
-
-  getCartItems(): Observable<CartItem[]> {
-    return this.cart$;
-  }
-
-  getCartCount(): Observable<number> {
-    if (!this.authService.isLoggedIn()) {
-      return of(0);
-    }
-
-    return this.cart$.pipe(
-      map(items => items.reduce((total, item) => total + item.quantity, 0))
-    );
   }
 
   addToCart(productId: number, quantity: number = 1): Observable<CartItem[]> {
     return this.api.post<any>('/cart', { productId, quantity }).pipe(
       map(response => this.normalizeCartResponse(response)),
-      tap(items => this.cartSubject.next(items)),
-      tap(() => this.refreshCart())
+      tap(items => this.cartItems.set(items))
     );
   }
 
   updateCartItem(itemId: string, quantity: number): Observable<CartItem[]> {
     return this.api.put<any>(`/cart/${itemId}`, { quantity }).pipe(
       map(response => this.normalizeCartResponse(response)),
-      tap(items => this.cartSubject.next(items)),
-      tap(() => this.refreshCart())
+      tap(items => this.cartItems.set(items))
     );
   }
 
   removeFromCart(itemId: string): Observable<CartItem[]> {
     return this.api.delete<any>(`/cart/${itemId}`).pipe(
       map(response => this.normalizeCartResponse(response)),
-      tap(items => this.cartSubject.next(items)),
-      tap(() => this.refreshCart())
+      tap(items => this.cartItems.set(items))
     );
   }
 
   clearCart(): Observable<CartItem[]> {
     return this.api.delete<any>('/cart').pipe(
       map(response => this.normalizeCartResponse(response)),
-      tap(items => this.cartSubject.next(items)),
-      tap(() => this.refreshCart())
+      tap(items => this.cartItems.set(items))
     );
   }
 

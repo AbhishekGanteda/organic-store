@@ -6,6 +6,13 @@ describe('QuestionCard', () => {
   let component: QuestionCard;
   let fixture: ComponentFixture<QuestionCard>;
 
+  const question = {
+    id: 1,
+    question: 'Is delivery available?',
+    answer: 'Yes, delivery is available.',
+    isOpen: false,
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [QuestionCard]
@@ -14,6 +21,8 @@ describe('QuestionCard', () => {
 
     fixture = TestBed.createComponent(QuestionCard);
     component = fixture.componentInstance;
+    component.question = question;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 

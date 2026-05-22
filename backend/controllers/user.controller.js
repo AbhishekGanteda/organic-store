@@ -33,6 +33,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   const updated = await user.save();
   res.json({
+    _id: updated._id,
     id: updated._id,
     name: updated.name,
     email: updated.email,

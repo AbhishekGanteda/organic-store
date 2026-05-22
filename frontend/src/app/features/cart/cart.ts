@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { CartService } from '../../core/services/cart';
-import { CartItem } from '../../core/models/cart-item';
 
 @Component({
   selector: 'app-cart',
@@ -14,23 +13,15 @@ import { CartItem } from '../../core/models/cart-item';
 })
 export class Cart {
 
-  cartItems: CartItem[] = [];
+  private cartService = inject(CartService);
 
-  isLoading = false;
+  private router = inject(Router);
 
-  constructor(
-    private cartService: CartService,
-    private router: Router
-  ) {}
+  cartItems = this.cartService.cartItems;
 
-  ngOnInit() {
+  isLoading = signal(false);
 
-    this.cartService.getCartItems().subscribe(items => {
-      this.cartItems = items;
-    });
-  }
-
-  increaseQuantity(item: CartItem) {
+  increaseQuantity(item: any) {
 
     if (!item._id) {
       return;
@@ -41,7 +32,7 @@ export class Cart {
       .subscribe();
   }
 
-  decreaseQuantity(item: CartItem) {
+  decreaseQuantity(item: any) {
 
     if (!item._id || item.quantity <= 1) {
       return;
@@ -52,7 +43,7 @@ export class Cart {
       .subscribe();
   }
 
-  removeItem(item: CartItem) {
+  removeItem(item: any) {
 
     if (!item._id) {
       return;
@@ -65,7 +56,7 @@ export class Cart {
 
   getSubtotal(): number {
 
-    return this.cartItems.reduce(
+    return this.cartItems().reduce(
       (total, item) =>
         total + (item.product.price * item.quantity),
       0
@@ -79,11 +70,11 @@ export class Cart {
 
   proceedToCheckout() {
 
-    this.isLoading = true;
+    this.isLoading.set(true);
 
     setTimeout(() => {
 
-      this.isLoading = false;
+      this.isLoading.set(false);
 
       this.router.navigateByUrl('/checkout');
 

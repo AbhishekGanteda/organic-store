@@ -23,19 +23,19 @@
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-8">
       <article class="dashboard-card">
         <h2>Total Users</h2>
-        <p>{{ summary.users || 0 }}</p>
+        <p>{{ summary().users || 0 }}</p>
       </article>
       <article class="dashboard-card">
         <h2>Total Orders</h2>
-        <p>{{ summary.orders || 0 }}</p>
+        <p>{{ summary().orders || 0 }}</p>
       </article>
       <article class="dashboard-card">
         <h2>Total Products</h2>
-        <p>{{ summary.products || 0 }}</p>
+        <p>{{ summary().products || 0 }}</p>
       </article>
       <article class="dashboard-card">
         <h2>Total Revenue</h2>
-        <p>${{ summary.revenue?.toFixed(2) || 0 }}</p>
+        <p>${{ summary().revenue?.toFixed(2) || 0 }}</p>
       </article>
     </div>
     }
@@ -55,7 +55,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (user of users; track user._id) {
+            @for (user of users(); track user._id) {
             <tr>
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>
@@ -87,7 +87,7 @@
           <input type="text" placeholder="Image URL" [(ngModel)]="newProduct.image" />
           <select [(ngModel)]="newProduct.category">
             <option value="">Select category</option>
-            @for (c of categories; track c._id) {
+            @for (c of categories(); track c._id) {
             <option [value]="c.name">{{ c.name }}</option>
             }
           </select>
@@ -113,7 +113,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (product of products; track product._id) {
+            @for (product of products(); track product._id) {
             <tr>
               <td>{{ product.name }}</td>
               <td>${{ product.price }}</td>
@@ -152,7 +152,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (category of categories; track category._id) {
+            @for (category of categories(); track category._id) {
             <tr>
               <td>{{ category.name }}</td>
               <td>{{ category.description }}</td>
@@ -190,7 +190,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (feature of features; track feature._id) {
+            @for (feature of features(); track feature._id) {
             <tr>
               <td>{{ feature.name }}</td>
               <td>{{ feature.icon }}</td>
@@ -232,7 +232,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (question of questions; track question._id) {
+            @for (question of questions(); track question._id) {
             <tr>
               <td>{{ question.question }}</td>
               <td>{{ question.answer }}</td>
@@ -272,7 +272,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (review of reviews; track review._id) {
+            @for (review of reviews(); track review._id) {
             <tr>
               <td>{{ review.name }}</td>
               <td>{{ review.review }}</td>
@@ -303,7 +303,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (order of orders; track order._id) {
+            @for (order of orders(); track order._id) {
             <tr>
               <td>{{ order._id }}</td>
               <td>{{ order.user?.email || order.user?.name || 'Unknown' }}</td>

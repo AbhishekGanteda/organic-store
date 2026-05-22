@@ -100,7 +100,9 @@ export class AdminService {
   }
 
   getOrders(): Observable<any[]> {
-    return this.api.get('/orders');
+    return this.api.get<{ orders?: any[] } | any[]>('/orders').pipe(
+      map(response => Array.isArray(response) ? response : response.orders ?? [])
+    );
   }
 
   updateOrderStatus(id: string, data: any): Observable<any> {

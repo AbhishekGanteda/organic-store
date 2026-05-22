@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -15,9 +15,9 @@ import { CartService } from '../../core/services/cart';
 })
 export class ProductDetails {
 
-  product?: Product;
-  relatedProducts: Product[] = [];
-  quantity: number = 1;
+  product = signal<Product | null>(null);
+  relatedProducts = signal<Product[]>([]);
+  quantity = signal(1);
 
   constructor(
     private route: ActivatedRoute,
@@ -33,11 +33,15 @@ export class ProductDetails {
         return;
       }
 
+      this.quantity.set(1);
+      this.product.set(null);
+      this.relatedProducts.set([]);
+
       this.productService.getProductById(id).subscribe(product => {
-        this.product = product;
+        this.product.set(product);
 
         this.productService.getRelatedProducts(product.category, id).subscribe(products => {
-          this.relatedProducts = products.filter(p => p.id !== id).slice(0, 3);
+          this.relatedProducts.set(products.filter(p => p.id !== id).slice(0, 3));
           this.cdr.detectChanges();
         });
 
@@ -47,21 +51,26 @@ export class ProductDetails {
   }
 
   increaseQuantity() {
-    this.quantity++;
+    this.quantity.update(quantity => quantity + 1);
   }
 
   decreaseQuantity() {
-    if (this.quantity > 1) {
-      this.quantity--;
+    if (this.quantity() > 1) {
+      this.quantity.update(quantity => quantity - 1);
     }
   }
 
   addToCart() {
-    if (!this.product) {
+    const product = this.product();
+    if (!product) {
       return;
     }
 
-    this.cartService.addToCart(this.product.id, this.quantity).subscribe();
+    this.cartService.addToCart(product.id, this.quantity()).subscribe({
+      next: () => {
+        this.quantity.set(1);
+      },
+    });
   }
 
 }

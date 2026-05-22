@@ -67,7 +67,15 @@ export const routes: Routes = [
   {
     path: 'checkout',
     loadComponent: () =>
-      import('./layout/order-success/order-success')
-        .then(m => m.OrderSuccess)
+      import('./layout/checkout/checkout')
+        .then(m => m.Checkout),
+    canMatch: [AuthGuard]
+  },
+  {
+    path: 'orders',
+    loadComponent: () =>
+      import('./features/orders/orders')
+        .then(m => m.Orders),
+    canMatch: [AuthGuard]
   }
 ];

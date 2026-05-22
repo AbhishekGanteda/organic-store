@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth';
 import { Toast } from '../../shared/components/toast/toast';
@@ -14,15 +14,19 @@ import { Toast } from '../../shared/components/toast/toast';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Toast],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, Toast],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })
-export class Profile implements OnInit {
+export class Profile {
 
-  currentUser: any = null;
+  private auth = inject(AuthService);
 
-  isEditing = false;
+  private router = inject(Router);
+
+  currentUser = this.auth.currentUser;
+
+  isEditing = signal(false);
 
   profileForm = new FormGroup({
     name: new FormControl('', [
@@ -55,58 +59,49 @@ export class Profile implements OnInit {
     confirmPassword: new FormControl('')
   });
 
-  toastMessage = '';
+  toastMessage = signal('');
 
-  toastType: 'success' | 'error' | 'warning' = 'success';
+  toastType = signal<'success' | 'error' | 'warning'>('success');
 
-  showToast = false;
+  showToast = signal(false);
 
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  private readonly syncProfileForm = effect(() => {
+    const user = this.currentUser();
 
-  ngOnInit() {
+    if (user) {
 
-    this.auth.currentUser$.subscribe(user => {
+      const primaryAddress = user.addresses?.[0] || {};
 
-      this.currentUser = user;
+      this.profileForm.patchValue({
 
-      if (user) {
+        name: user.name,
 
-        const primaryAddress = user.addresses?.[0] || {};
+        email: user.email,
 
-        this.profileForm.patchValue({
+        address: {
+          label: primaryAddress.label || 'Home',
 
-          name: user.name,
+          street: primaryAddress.street || '',
 
-          email: user.email,
+          city: primaryAddress.city || '',
 
-          address: {
-            label: primaryAddress.label || 'Home',
+          state: primaryAddress.state || '',
 
-            street: primaryAddress.street || '',
+          postalCode: primaryAddress.postalCode || '',
 
-            city: primaryAddress.city || '',
-
-            state: primaryAddress.state || '',
-
-            postalCode: primaryAddress.postalCode || '',
-
-            country: primaryAddress.country || ''
-          }
-        });
-      }
-    });
-  }
+          country: primaryAddress.country || ''
+        }
+      });
+    }
+  });
 
   startEditing() {
-    this.isEditing = true;
+    this.isEditing.set(true);
   }
 
   cancelEditing() {
 
-    this.isEditing = false;
+    this.isEditing.set(false);
 
     this.profileForm.patchValue({
       password: '',
@@ -177,9 +172,9 @@ export class Profile implements OnInit {
 
         this.auth.updateCurrentUser(updatedUser);
 
-        this.currentUser = updatedUser;
+        this.currentUser.set(updatedUser);
 
-        this.isEditing = false;
+        this.isEditing.set(false);
 
         this.triggerToast(
           'Profile updated successfully.',
@@ -207,15 +202,15 @@ export class Profile implements OnInit {
     type: 'success' | 'error' | 'warning'
   ) {
 
-    this.toastMessage = message;
+    this.toastMessage.set(message);
 
-    this.toastType = type;
+    this.toastType.set(type);
 
-    this.showToast = true;
+    this.showToast.set(true);
 
     setTimeout(() => {
 
-      this.showToast = false;
+      this.showToast.set(false);
 
     }, 3000);
   }

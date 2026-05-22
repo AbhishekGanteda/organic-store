@@ -6,6 +6,16 @@ describe('ProductCard', () => {
   let component: ProductCard;
   let fixture: ComponentFixture<ProductCard>;
 
+  const product = {
+    id: 1,
+    name: 'Apple',
+    category: 'Fruits',
+    price: 100,
+    image: 'apple.png',
+    rating: 5,
+    description: 'Fresh apples',
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProductCard]
@@ -14,6 +24,8 @@ describe('ProductCard', () => {
 
     fixture = TestBed.createComponent(ProductCard);
     component = fixture.componentInstance;
+    component.product = product;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 

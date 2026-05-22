@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/async-handler');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const User = require('../models/User');
 
 const getOrders = asyncHandler(async (req, res) => {
   const { status, search, page = 1, limit = 20 } = req.query;
@@ -60,7 +61,16 @@ const createOrder = asyncHandler(async (req, res) => {
     totalPrice: Number(totalPrice),
   });
 
-  res.status(201).json(order);
+  await User.findByIdAndUpdate(req.user._id, {
+    $set: { cart: [] },
+  });
+
+  const createdOrder = await Order.findById(order._id)
+    .populate('user', 'name email')
+    .populate('items.product', 'id name price image')
+    .lean();
+
+  res.status(201).json(createdOrder);
 });
 
 const updateOrderStatus = asyncHandler(async (req, res) => {
