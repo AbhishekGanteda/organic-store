@@ -1,6 +1,10 @@
 const asyncHandler = require('../middleware/async-handler');
 const User = require('../models/User');
 const { generateToken } = require('../utils/token');
+const {
+  getLoginPublicKey: loadLoginPublicKey,
+  decryptLoginPassword,
+} = require('../utils/auth-crypto');
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -34,11 +38,27 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, encryptedPassword } = req.body;
+
+  let resolvedPassword = password;
+
+  if (encryptedPassword) {
+    try {
+      resolvedPassword = decryptLoginPassword(encryptedPassword);
+    } catch {
+      res.status(400);
+      throw new Error('Invalid encrypted password payload');
+    }
+  }
+
+  if (!resolvedPassword) {
+    res.status(400);
+    throw new Error('Password is required');
+  }
 
   const user = await User.findOne({ email: email.toLowerCase().trim() });
 
-  if (user && await user.matchPassword(password)) {
+  if (user && await user.matchPassword(resolvedPassword)) {
     res.json({
       user: {
         id: user._id,
@@ -52,6 +72,11 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Invalid email or password');
   }
+});
+
+const getLoginPublicKey = asyncHandler(async (req, res) => {
+  const { publicKey, source } = loadLoginPublicKey();
+  res.json({ publicKey, source });
 });
 
 const getMe = asyncHandler(async (req, res) => {
@@ -111,4 +136,4 @@ const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { registerUser, loginUser, getMe, updateProfile };
+module.exports = { registerUser, loginUser, getLoginPublicKey, getMe, updateProfile };

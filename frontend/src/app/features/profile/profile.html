@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto py-12 px-6">
+<div class="max-w-5xl mx-auto bg-[#f8f6f3] py-12 px-6">
 
   <ng-container *ngIf="currentUser(); else noUser">
 
@@ -296,14 +296,14 @@
           <button
             type="button"
             (click)="cancelEditing()"
-            class="px-5 py-3 bg-gray-200 rounded-xl hover:bg-gray-300"
+            class="px-5 py-3 bg-gray-200 rounded-xl hover:bg-gray-300 cursor-pointer"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            class="px-5 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700"
+            class="px-5 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 cursor-pointer"
           >
             Save Changes
           </button>

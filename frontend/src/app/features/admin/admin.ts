@@ -14,6 +14,17 @@ export type AdminView =
   | 'reviews'
   | 'orders';
 
+type AdminLoadingState = {
+  summary: boolean;
+  users: boolean;
+  products: boolean;
+  categories: boolean;
+  features: boolean;
+  questions: boolean;
+  reviews: boolean;
+  orders: boolean;
+};
+
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -35,11 +46,23 @@ export class Admin implements OnInit {
   reviews = signal<any[]>([]);
   orders = signal<any[]>([]);
 
+  // loading states for each resource to support loading indicators
+  loading = signal<AdminLoadingState>({
+    summary: false,
+    users: false,
+    products: false,
+    categories: false,
+    features: false,
+    questions: false,
+    reviews: false,
+    orders: false,
+  });
+
   newCategory: any = { name: '', image: '', description: '' };
   newFeature: any = { name: '', icon: '', description: '' };
-  newQuestion: any = { question: '', answer: '', isOpen: true };
+  newQuestion: any = { question: '', answer: '', isOpen: false };
   newReview: any = { name: '', image: '', review: '', rating: 5 };
-  newProduct: any = { name: '', price: 0, originalPrice: 0, image: '', category: '', description: '', isSale: false, tags: '', isTrending: false, isBestSeller: false };
+  newProduct: any = { name: '', price: null, originalPrice: null, image: '', category: '', description: '', isSale: false, tags: '', isTrending: false, isBestSeller: false };
 
   statusOptions = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
   selectedOrderStatus: Record<string, string> = {};
@@ -131,8 +154,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getSummary().subscribe(summary => {
-      this.summary.set(summary);
+    this.loading.update(l => ({ ...l, summary: true }));
+    this.adminService.getSummary().subscribe({
+      next: summary => {
+        this.summary.set(summary);
+        this.loading.update(l => ({ ...l, summary: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, summary: false })),
     });
   }
 
@@ -141,8 +169,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getUsers().subscribe(users => {
-      this.users.set(users);
+    this.loading.update(l => ({ ...l, users: true }));
+    this.adminService.getUsers().subscribe({
+      next: users => {
+        this.users.set(users);
+        this.loading.update(l => ({ ...l, users: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, users: false })),
     });
   }
 
@@ -151,8 +184,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getProducts().subscribe(products => {
-      this.products.set(products);
+    this.loading.update(l => ({ ...l, products: true }));
+    this.adminService.getProducts().subscribe({
+      next: products => {
+        this.products.set(products);
+        this.loading.update(l => ({ ...l, products: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, products: false })),
     });
   }
 
@@ -170,7 +208,7 @@ export class Admin implements OnInit {
 
     this.adminService.createProduct(payload).subscribe(product => {
       this.products.update(products => [product, ...products]);
-      this.newProduct = { name: '', price: 0, originalPrice: 0, image: '', category: '', description: '', isSale: false, tags: '', isTrending: false, isBestSeller: false };
+      this.newProduct = { name: '', price: null, originalPrice: null, image: '', category: '', description: '', isSale: false, tags: '', isTrending: false, isBestSeller: false };
     });
   }
 
@@ -179,8 +217,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getCategories().subscribe(categories => {
-      this.categories.set(categories);
+    this.loading.update(l => ({ ...l, categories: true }));
+    this.adminService.getCategories().subscribe({
+      next: categories => {
+        this.categories.set(categories);
+        this.loading.update(l => ({ ...l, categories: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, categories: false })),
     });
   }
 
@@ -189,8 +232,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getFeatures().subscribe(features => {
-      this.features.set(features);
+    this.loading.update(l => ({ ...l, features: true }));
+    this.adminService.getFeatures().subscribe({
+      next: features => {
+        this.features.set(features);
+        this.loading.update(l => ({ ...l, features: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, features: false })),
     });
   }
 
@@ -199,8 +247,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getQuestions().subscribe(questions => {
-      this.questions.set(questions);
+    this.loading.update(l => ({ ...l, questions: true }));
+    this.adminService.getQuestions().subscribe({
+      next: questions => {
+        this.questions.set(questions);
+        this.loading.update(l => ({ ...l, questions: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, questions: false })),
     });
   }
 
@@ -209,8 +262,13 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getReviews().subscribe(reviews => {
-      this.reviews.set(reviews);
+    this.loading.update(l => ({ ...l, reviews: true }));
+    this.adminService.getReviews().subscribe({
+      next: reviews => {
+        this.reviews.set(reviews);
+        this.loading.update(l => ({ ...l, reviews: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, reviews: false })),
     });
   }
 
@@ -219,11 +277,16 @@ export class Admin implements OnInit {
       return;
     }
 
-    this.adminService.getOrders().subscribe(orders => {
-      this.orders.set(orders);
-      orders.forEach(order => {
-        this.selectedOrderStatus[order._id] = order.status;
-      });
+    this.loading.update(l => ({ ...l, orders: true }));
+    this.adminService.getOrders().subscribe({
+      next: orders => {
+        this.orders.set(orders);
+        orders.forEach(order => {
+          this.selectedOrderStatus[order._id] = order.status;
+        });
+        this.loading.update(l => ({ ...l, orders: false }));
+      },
+      error: () => this.loading.update(l => ({ ...l, orders: false })),
     });
   }
 
@@ -309,7 +372,7 @@ export class Admin implements OnInit {
     if (!this.newQuestion.question.trim()) return;
     this.adminService.createQuestion(this.newQuestion).subscribe(question => {
       this.questions.update(questions => [question, ...questions]);
-      this.newQuestion = { question: '', answer: '', isOpen: true };
+      this.newQuestion = { question: '', answer: '', isOpen: false };
     });
   }
 

@@ -29,7 +29,7 @@ export class Everything {
     private productService: ProductService,
     private cdr: ChangeDetectorRef
   ) {
-    this.productService.getAllProducts().subscribe(products => {
+    this.productService.getAllProducts('', 'All', '', 1, 1000).subscribe(products => {
       this.products = products;
       this.filteredProducts = products;
       this.cdr.detectChanges();

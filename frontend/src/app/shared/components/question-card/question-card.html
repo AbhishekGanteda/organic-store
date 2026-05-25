@@ -1,13 +1,13 @@
-<div class="border-b border-gray-300 pb-8">
+<div class="border-b border-gray-300 pb-8 cursor-pointer" (click)="toggleFaq(question)">
 
     <!-- QUESTION -->
-    <button class="w-full flex justify-between items-center text-left" (click)="toggleFaq(question)">
+    <button class="w-full flex justify-between items-center text-left cursor-pointer">
 
         <span class="text-lg font-semibold">
             {{ question.question }}
         </span>
 
-        <i class="fa-solid" [class.fa-chevron-down]="!question.isOpen" [class.fa-chevron-up]="question.isOpen"></i>
+        <i class="fa-solid cursor-pointer" [class.fa-chevron-down]="!question.isOpen" [class.fa-chevron-up]="question.isOpen"></i>
 
     </button>
 

@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, from, Observable, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -9,7 +9,8 @@ export class AuthService {
 
   private readonly tokenKey = 'token';
   private readonly currentUserKey = 'currentUser';
-  private readonly storage = sessionStorage;
+  private readonly storage = localStorage;
+  private loginPublicKey: string | null = null;
 
   currentUser = signal<any>(null);
 
@@ -22,7 +23,11 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<{ user: any; token: string }> {
-    return this.api.post<{ user: any; token: string }>('/auth/login', { email, password });
+    return from(this.encryptPassword(password)).pipe(
+      switchMap(encryptedPassword =>
+        this.api.post<{ user: any; token: string }>('/auth/login', { email, encryptedPassword })
+      )
+    );
   }
 
   updateProfile(data: { name: string; email: string; password?: string }): Observable<any> {
@@ -90,6 +95,72 @@ export class AuthService {
     } catch {
       return true;
     }
+  }
+
+  private async encryptPassword(password: string): Promise<string> {
+    if (!globalThis.crypto?.subtle) {
+      throw new Error('Secure crypto API is unavailable in this browser');
+    }
+
+    const publicKeyPem = await this.getLoginPublicKey();
+    const keyData = this.pemToArrayBuffer(publicKeyPem);
+
+    const publicKey = await globalThis.crypto.subtle.importKey(
+      'spki',
+      keyData,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['encrypt']
+    );
+
+    const encodedPassword = new TextEncoder().encode(password);
+    const encrypted = await globalThis.crypto.subtle.encrypt(
+      { name: 'RSA-OAEP' },
+      publicKey,
+      encodedPassword
+    );
+
+    return this.arrayBufferToBase64(encrypted);
+  }
+
+  private async getLoginPublicKey(): Promise<string> {
+    if (this.loginPublicKey) {
+      return this.loginPublicKey;
+    }
+
+    const response = await firstValueFrom(this.api.get<{ publicKey: string }>('/auth/login-public-key'));
+    if (!response?.publicKey) {
+      throw new Error('Unable to fetch login public key');
+    }
+
+    this.loginPublicKey = response.publicKey;
+    return this.loginPublicKey;
+  }
+
+  private pemToArrayBuffer(pem: string): ArrayBuffer {
+    const base64 = pem
+      .replace('-----BEGIN PUBLIC KEY-----', '')
+      .replace('-----END PUBLIC KEY-----', '')
+      .replace(/\s/g, '');
+
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    return bytes.buffer;
+  }
+
+  private arrayBufferToBase64(buffer: ArrayBuffer): string {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+
+    for (let i = 0; i < bytes.length; i += 1) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
   }
 
 }

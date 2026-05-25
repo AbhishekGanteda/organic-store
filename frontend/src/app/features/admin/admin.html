@@ -7,14 +7,14 @@
           <p class="mt-2 text-slate-600">Monitor store performance and manage products, users, categories, features, questions, reviews, and orders.</p>
         </div>
         <nav class="flex flex-wrap gap-2">
-          <button class="admin-tab" [class.active]="view() === 'summary'" (click)="selectView('summary')">Summary</button>
-          <button class="admin-tab" [class.active]="view() === 'users'" (click)="selectView('users')">Users</button>
-          <button class="admin-tab" [class.active]="view() === 'products'" (click)="selectView('products')">Products</button>
-          <button class="admin-tab" [class.active]="view() === 'categories'" (click)="selectView('categories')">Categories</button>
-          <button class="admin-tab" [class.active]="view() === 'features'" (click)="selectView('features')">Features</button>
-          <button class="admin-tab" [class.active]="view() === 'questions'" (click)="selectView('questions')">Questions</button>
-          <button class="admin-tab" [class.active]="view() === 'reviews'" (click)="selectView('reviews')">Reviews</button>
-          <button class="admin-tab" [class.active]="view() === 'orders'" (click)="selectView('orders')">Orders</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'summary'" (click)="selectView('summary')">Summary</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'users'" (click)="selectView('users')">Users</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'products'" (click)="selectView('products')">Products</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'categories'" (click)="selectView('categories')">Categories</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'features'" (click)="selectView('features')">Features</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'questions'" (click)="selectView('questions')">Questions</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'reviews'" (click)="selectView('reviews')">Reviews</button>
+          <button class="admin-tab cursor-pointer" [class.active]="view() === 'orders'" (click)="selectView('orders')">Orders</button>
         </nav>
       </div>
     </header>
@@ -23,19 +23,19 @@
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-8">
       <article class="dashboard-card">
         <h2>Total Users</h2>
-        <p>{{ summary().users || 0 }}</p>
+        <p aria-live="polite">{{ summary().users || 0 }}</p>
       </article>
       <article class="dashboard-card">
         <h2>Total Orders</h2>
-        <p>{{ summary().orders || 0 }}</p>
+        <p aria-live="polite">{{ summary().orders || 0 }}</p>
       </article>
       <article class="dashboard-card">
         <h2>Total Products</h2>
-        <p>{{ summary().products || 0 }}</p>
+        <p aria-live="polite">{{ summary().products || 0 }}</p>
       </article>
       <article class="dashboard-card">
         <h2>Total Revenue</h2>
-        <p>${{ summary().revenue?.toFixed(2) || 0 }}</p>
+        <p aria-live="polite">${{ summary().revenue?.toFixed(2) || 0 }}</p>
       </article>
     </div>
     }
@@ -43,6 +43,11 @@
     @if (view() === 'users') {
     <section class="admin-section">
       <h2>Manage Users</h2>
+      @if (loading().users) {
+      <div role="status" aria-live="polite" class="p-4">Loading users…</div>
+      } @else if (users().length === 0) {
+      <div class="p-4 text-slate-600">No users found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
@@ -72,6 +77,7 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
 
@@ -79,21 +85,35 @@
     <section class="admin-section">
       <h2>Manage Products</h2>
       <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
-        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
-          <h3>Create Product</h3>
-          <input type="text" placeholder="Name" [(ngModel)]="newProduct.name" />
-          <input type="number" placeholder="Price" [(ngModel)]="newProduct.price" />
-          <input type="number" placeholder="Original Price" [(ngModel)]="newProduct.originalPrice" />
-          <input type="text" placeholder="Image URL" [(ngModel)]="newProduct.image" />
-          <select [(ngModel)]="newProduct.category">
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto" aria-labelledby="create-product-heading">
+          <h3 id="create-product-heading">Create Product</h3>
+          <label for="product-name" class="sr-only">Product name</label>
+          <input id="product-name" type="text" placeholder="Name" [(ngModel)]="newProduct.name" aria-label="Product name" />
+
+          <label for="product-price" class="sr-only">Price</label>
+          <input id="product-price" type="number" placeholder="Price" [(ngModel)]="newProduct.price" aria-label="Price" />
+
+          <label for="product-originalPrice" class="sr-only">Original Price</label>
+          <input id="product-originalPrice" type="number" placeholder="Original Price" [(ngModel)]="newProduct.originalPrice" aria-label="Original Price" />
+
+          <label for="product-image" class="sr-only">Image URL</label>
+          <input id="product-image" type="text" placeholder="Image URL" [(ngModel)]="newProduct.image" aria-label="Image URL" />
+
+          <label for="product-category" class="sr-only">Category</label>
+          <select id="product-category" [(ngModel)]="newProduct.category" aria-label="Category">
             <option value="">Select category</option>
             @for (c of categories(); track c._id) {
             <option [value]="c.name">{{ c.name }}</option>
             }
           </select>
-          <textarea rows="2" placeholder="Description" [(ngModel)]="newProduct.description"></textarea>
-          <input type="text" placeholder="Tags (comma separated)" [(ngModel)]="newProduct.tags" />
-          <div class="flex gap-2">
+
+          <label for="product-description" class="sr-only">Description</label>
+          <textarea id="product-description" rows="2" placeholder="Description" [(ngModel)]="newProduct.description" aria-label="Description"></textarea>
+
+          <label for="product-tags" class="sr-only">Tags</label>
+          <input id="product-tags" type="text" placeholder="Tags (comma separated)" [(ngModel)]="newProduct.tags" aria-label="Tags" />
+
+          <div class="flex gap-2" role="group" aria-label="Product flags">
             <label><input type="checkbox" [(ngModel)]="newProduct.isSale" /> Sale</label>
             <label><input type="checkbox" [(ngModel)]="newProduct.isTrending" /> Trending</label>
             <label><input type="checkbox" [(ngModel)]="newProduct.isBestSeller" /> Best Seller</label>
@@ -101,6 +121,11 @@
           <button class="primary-button" (click)="createProduct()">Create</button>
         </div>
       </div>
+      @if (loading().products) {
+      <div role="status" aria-live="polite" class="p-4">Loading products…</div>
+      } @else if (products().length === 0) {
+      <div class="p-4 text-slate-600">No products found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
@@ -127,6 +152,7 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
 
@@ -134,14 +160,24 @@
     <section class="admin-section">
       <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
         <h2>Manage Categories</h2>
-        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
-          <h3>Create Category</h3>
-          <input type="text" placeholder="Name" [(ngModel)]="newCategory.name" />
-          <input type="text" placeholder="Image URL" [(ngModel)]="newCategory.image" />
-          <textarea rows="2" placeholder="Description" [(ngModel)]="newCategory.description"></textarea>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto" aria-labelledby="create-category-heading">
+          <h3 id="create-category-heading">Create Category</h3>
+          <label for="category-name" class="sr-only">Category name</label>
+          <input id="category-name" type="text" placeholder="Name" [(ngModel)]="newCategory.name" aria-label="Category name" />
+
+          <label for="category-image" class="sr-only">Image URL</label>
+          <input id="category-image" type="text" placeholder="Image URL" [(ngModel)]="newCategory.image" aria-label="Image URL" />
+
+          <label for="category-description" class="sr-only">Description</label>
+          <textarea id="category-description" rows="2" placeholder="Description" [(ngModel)]="newCategory.description" aria-label="Description"></textarea>
           <button class="primary-button" (click)="addCategory()">Create</button>
         </div>
       </div>
+      @if (loading().categories) {
+      <div role="status" aria-live="polite" class="p-4">Loading categories…</div>
+      } @else if (categories().length === 0) {
+      <div class="p-4 text-slate-600">No categories found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
@@ -164,6 +200,7 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
 
@@ -171,14 +208,24 @@
     <section class="admin-section">
       <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
         <h2>Manage Features</h2>
-        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
-          <h3>Create Feature</h3>
-          <input type="text" placeholder="Name" [(ngModel)]="newFeature.name" />
-          <input type="text" placeholder="Icon" [(ngModel)]="newFeature.icon" />
-          <textarea rows="2" placeholder="Description" [(ngModel)]="newFeature.description"></textarea>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto" aria-labelledby="create-feature-heading">
+          <h3 id="create-feature-heading">Create Feature</h3>
+          <label for="feature-name" class="sr-only">Feature name</label>
+          <input id="feature-name" type="text" placeholder="Name" [(ngModel)]="newFeature.name" aria-label="Feature name" />
+
+          <label for="feature-icon" class="sr-only">Icon</label>
+          <input id="feature-icon" type="text" placeholder="Icon" [(ngModel)]="newFeature.icon" aria-label="Icon" />
+
+          <label for="feature-description" class="sr-only">Description</label>
+          <textarea id="feature-description" rows="2" placeholder="Description" [(ngModel)]="newFeature.description" aria-label="Description"></textarea>
           <button class="primary-button" (click)="addFeature()">Create</button>
         </div>
       </div>
+      @if (loading().features) {
+      <div role="status" aria-live="polite" class="p-4">Loading features…</div>
+      } @else if (features().length === 0) {
+      <div class="p-4 text-slate-600">No features found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
@@ -203,6 +250,7 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
 
@@ -210,24 +258,28 @@
     <section class="admin-section">
       <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
         <h2>Manage Questions</h2>
-        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
-          <h3>Create Question</h3>
-          <input type="text" placeholder="Question" [(ngModel)]="newQuestion.question" />
-          <textarea rows="2" placeholder="Answer" [(ngModel)]="newQuestion.answer"></textarea>
-          <select [(ngModel)]="newQuestion.isOpen">
-            <option [ngValue]="true">Open</option>
-            <option [ngValue]="false">Closed</option>
-          </select>
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto" aria-labelledby="create-question-heading">
+          <h3 id="create-question-heading">Create Question</h3>
+          <label for="question-text" class="sr-only">Question</label>
+          <input id="question-text" type="text" placeholder="Question" [(ngModel)]="newQuestion.question" aria-label="Question" />
+
+          <label for="question-answer" class="sr-only">Answer</label>
+          <textarea id="question-answer" rows="2" placeholder="Answer" [(ngModel)]="newQuestion.answer" aria-label="Answer"></textarea>
+
           <button class="primary-button" (click)="addQuestion()">Create</button>
         </div>
       </div>
+      @if (loading().questions) {
+      <div role="status" aria-live="polite" class="p-4">Loading questions…</div>
+      } @else if (questions().length === 0) {
+      <div class="p-4 text-slate-600">No questions found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
             <tr>
               <th>Question</th>
               <th>Answer</th>
-              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -236,7 +288,6 @@
             <tr>
               <td>{{ question.question }}</td>
               <td>{{ question.answer }}</td>
-              <td>{{ question.isOpen ? 'Open' : 'Closed' }}</td>
               <td class="actions-cell">
                 <button class="danger-button" (click)="deleteQuestion(question._id)">Delete</button>
               </td>
@@ -245,6 +296,7 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
 
@@ -252,15 +304,27 @@
     <section class="admin-section">
       <div class="mb-6 flex flex-col md:flex-row gap-4 justify-between items-start">
         <h2>Manage Reviews</h2>
-        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto">
-          <h3>Create Review</h3>
-          <input type="text" placeholder="Name" [(ngModel)]="newReview.name" />
-          <input type="text" placeholder="Image URL" [(ngModel)]="newReview.image" />
-          <textarea rows="2" placeholder="Review" [(ngModel)]="newReview.review"></textarea>
-          <input type="number" min="1" max="5" [(ngModel)]="newReview.rating" />
+        <div class="category-form bg-white p-4 rounded-xl shadow-sm w-full md:w-auto" aria-labelledby="create-review-heading">
+          <h3 id="create-review-heading">Create Review</h3>
+          <label for="review-name" class="sr-only">Name</label>
+          <input id="review-name" type="text" placeholder="Name" [(ngModel)]="newReview.name" aria-label="Name" />
+
+          <label for="review-image" class="sr-only">Image URL</label>
+          <input id="review-image" type="text" placeholder="Image URL" [(ngModel)]="newReview.image" aria-label="Image URL" />
+
+          <label for="review-text" class="sr-only">Review</label>
+          <textarea id="review-text" rows="2" placeholder="Review" [(ngModel)]="newReview.review" aria-label="Review"></textarea>
+
+          <label for="review-rating" class="sr-only">Rating</label>
+          <input id="review-rating" type="number" min="1" max="5" [(ngModel)]="newReview.rating" aria-label="Rating" />
           <button class="primary-button" (click)="addReview()">Create</button>
         </div>
       </div>
+      @if (loading().reviews) {
+      <div role="status" aria-live="polite" class="p-4">Loading reviews…</div>
+      } @else if (reviews().length === 0) {
+      <div class="p-4 text-slate-600">No reviews found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
@@ -285,12 +349,18 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
 
     @if (view() === 'orders') {
     <section class="admin-section">
       <h2>Manage Orders</h2>
+      @if (loading().orders) {
+      <div role="status" aria-live="polite" class="p-4">Loading orders…</div>
+      } @else if (orders().length === 0) {
+      <div class="p-4 text-slate-600">No orders found.</div>
+      } @else {
       <div class="overflow-x-auto mt-4">
         <table class="admin-table">
           <thead>
@@ -322,6 +392,7 @@
           </tbody>
         </table>
       </div>
+      }
     </section>
     }
   </div>

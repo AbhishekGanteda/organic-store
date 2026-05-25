@@ -11,7 +11,7 @@ export class ProductService {
 
   constructor(private api: ApiService) {}
 
-  getAllProducts(search = '', category = 'All', sort = ''): Observable<Product[]> {
+  getAllProducts(search = '', category = 'All', sort = '', page?: number, limit?: number): Observable<Product[]> {
     const queryParams = [];
     if (category && category !== 'All') {
       queryParams.push(`category=${encodeURIComponent(category)}`);
@@ -21,6 +21,12 @@ export class ProductService {
     }
     if (sort) {
       queryParams.push(`sort=${encodeURIComponent(sort)}`);
+    }
+    if (page && page > 0) {
+      queryParams.push(`page=${page}`);
+    }
+    if (limit && limit > 0) {
+      queryParams.push(`limit=${limit}`);
     }
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
     return this.api

@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 
 import { Order, OrderItem, OrderProduct } from '../../core/models/order.model';
 import { OrderService } from '../../core/services/orders';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-orders',
@@ -14,6 +15,7 @@ import { OrderService } from '../../core/services/orders';
 })
 export class Orders implements OnInit {
   private readonly orderService = inject(OrderService);
+  private readonly auth = inject(AuthService);
 
   readonly orders = signal<Order[]>([]);
   readonly isLoading = signal(true);
@@ -23,7 +25,22 @@ export class Orders implements OnInit {
   readonly mostRecentOrderDate = computed(() => {
     const orders = this.orders();
 
-    return orders.length ? this.getOrderDate(orders[0]) : 'No orders yet';
+    if (!orders.length) {
+      return 'No orders yet';
+    }
+
+    const latestOrder = [...orders].sort(
+      (a, b) =>
+        new Date(b.createdAt || '').getTime() -
+        new Date(a.createdAt || '').getTime()
+    )[0];
+
+    return this.getOrderDate(latestOrder);
+  });
+
+  readonly canViewRecipient = computed(() => {
+    const user = this.auth.currentUser();
+    return !!user && user.role === 'admin';
   });
 
   ngOnInit() {

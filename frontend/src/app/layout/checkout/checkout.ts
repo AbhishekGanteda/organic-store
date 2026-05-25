@@ -31,6 +31,7 @@ export class Checkout {
   isPlacingOrder = signal(false);
   orderPlaced = signal<Order | null>(null);
   errorMessage = signal('');
+  hasPrefilledShippingAddress = signal(false);
   private redirectTimer: ReturnType<typeof setTimeout> | null = null;
 
   shippingForm = new FormGroup({
@@ -46,7 +47,7 @@ export class Checkout {
     const user = this.currentUser();
     const primaryAddress = user?.addresses?.[0];
 
-    if (primaryAddress) {
+    if (primaryAddress && !this.hasPrefilledShippingAddress()) {
       this.shippingForm.patchValue({
         label: primaryAddress.label || 'Home',
         street: primaryAddress.street || '',
@@ -55,6 +56,8 @@ export class Checkout {
         postalCode: primaryAddress.postalCode || '',
         country: primaryAddress.country || '',
       });
+
+      this.hasPrefilledShippingAddress.set(true);
     }
   });
 
