@@ -1,5 +1,10 @@
 module.exports = {
   testEnvironment: 'node',
   clearMocks: true,
-  collectCoverageFrom: ['controllers/**/*.js', 'utils/**/*.js'],
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json', diagnostics: false }],
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
+  testMatch: ['**/tests/**/*.test.ts'],
+  collectCoverageFrom: ['controllers/**/*.ts', 'utils/**/*.ts'],
 };
