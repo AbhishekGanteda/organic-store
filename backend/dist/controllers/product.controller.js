@@ -1,5 +1,5 @@
-import asyncHandler from '../middleware/async-handler';
-import Product from '../models/Product';
+import asyncHandler from '../middleware/async-handler.js';
+import Product from '../models/Product.js';
 const getProducts = asyncHandler(async (req, res) => {
     const { category, search, sort, page = 1, limit = 12, sale, trending, bestSeller, } = req.query;
     const query = {};

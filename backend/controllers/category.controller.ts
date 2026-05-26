@@ -1,5 +1,5 @@
-import asyncHandler from '../middleware/async-handler';
-import Category from '../models/Category';
+import asyncHandler from '../middleware/async-handler.js';
+import Category from '../models/Category.js';
 
 const getAllCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find().sort({ id: 1 }).lean();

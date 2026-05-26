@@ -11,7 +11,7 @@ describe('auth-crypto util', () => {
     process.env.AUTH_LOGIN_PUBLIC_KEY = '-----BEGIN PUBLIC KEY-----\\nabc\\n-----END PUBLIC KEY-----';
     process.env.AUTH_LOGIN_PRIVATE_KEY = '-----BEGIN PRIVATE KEY-----\\nxyz\\n-----END PRIVATE KEY-----';
 
-    import { getLoginPublicKey } from '../utils/auth-crypto';
+    import { getLoginPublicKey } from '../utils/auth-crypto.js';
     const result = getLoginPublicKey();
 
     expect(result.source).toBe('env');
@@ -19,7 +19,7 @@ describe('auth-crypto util', () => {
   });
 
   it('generates key pair when env keys are absent', () => {
-    import { getLoginPublicKey } from '../utils/auth-crypto';
+    import { getLoginPublicKey } from '../utils/auth-crypto.js';
     const result = getLoginPublicKey();
 
     expect(result.source).toBe('generated');
@@ -45,14 +45,14 @@ describe('auth-crypto util', () => {
       Buffer.from('admin1234', 'utf8')
     );
 
-    const { decryptLoginPassword } from '../utils/auth-crypto';
+    const { decryptLoginPassword } from '../utils/auth-crypto.js';
     const decrypted = decryptLoginPassword(encrypted.toString('base64'));
 
     expect(decrypted).toBe('admin1234');
   });
 
   it('returns null for empty encrypted password input', () => {
-    import { decryptLoginPassword } from '../utils/auth-crypto';
+    import { decryptLoginPassword } from '../utils/auth-crypto.js';
     expect(decryptLoginPassword('')).toBeNull();
   });
 });

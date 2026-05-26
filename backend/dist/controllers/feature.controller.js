@@ -1,5 +1,5 @@
-import asyncHandler from '../middleware/async-handler';
-import Feature from '../models/Feature';
+import asyncHandler from '../middleware/async-handler.js';
+import Feature from '../models/Feature.js';
 const getAllFeatures = asyncHandler(async (req, res) => {
     const features = await Feature.find().sort({ id: 1 }).lean();
     res.json(features);

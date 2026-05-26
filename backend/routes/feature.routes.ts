@@ -3,10 +3,10 @@ import { getAllFeatures,
   getFeatureById,
   createFeature,
   updateFeature,
-  deleteFeature, } from '../controllers/feature.controller';
-import { featureValidator } from '../validators/feature.validator';
-import validateRequest from '../middleware/validate.middleware';
-import { protect, admin } from '../middleware/auth.middleware';
+  deleteFeature, } from '../controllers/feature.controller.js';
+import { featureValidator } from '../validators/feature.validator.js';
+import validateRequest from '../middleware/validate.middleware.js';
+import { protect, admin } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import User from '../models/User.js';
 
 export const protect = async (req: any, res: any, next: any) => {
   const authHeader = req.headers.authorization;

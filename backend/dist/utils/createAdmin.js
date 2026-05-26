@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User from '../models/User.js';
 const createAdminUser = async () => {
     if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
         return;

@@ -1,5 +1,5 @@
-import asyncHandler from '../middleware/async-handler';
-import Question from '../models/Question';
+import asyncHandler from '../middleware/async-handler.js';
+import Question from '../models/Question.js';
 
 const getAllQuestions = asyncHandler(async (req, res) => {
   const questions = await Question.find().sort({ id: 1 }).lean();

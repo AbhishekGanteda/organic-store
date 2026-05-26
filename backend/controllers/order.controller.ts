@@ -1,7 +1,7 @@
-import asyncHandler from '../middleware/async-handler';
-import Order from '../models/Order';
-import Product from '../models/Product';
-import User from '../models/User';
+import asyncHandler from '../middleware/async-handler.js';
+import Order from '../models/Order.js';
+import Product from '../models/Product.js';
+import User from '../models/User.js';
 
 const getOrders = asyncHandler(async (req, res) => {
   const { status, search, page = 1, limit = 20 } = req.query;

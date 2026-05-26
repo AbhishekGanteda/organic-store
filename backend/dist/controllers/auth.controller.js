@@ -1,7 +1,7 @@
-import asyncHandler from '../middleware/async-handler';
-import User from '../models/User';
-import { generateToken } from '../utils/token';
-import { getLoginPublicKey as loadLoginPublicKey, decryptLoginPassword, } from '../utils/auth-crypto';
+import asyncHandler from '../middleware/async-handler.js';
+import User from '../models/User.js';
+import { generateToken } from '../utils/token.js';
+import { getLoginPublicKey as loadLoginPublicKey, decryptLoginPassword, } from '../utils/auth-crypto.js';
 export const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email: email.toLowerCase().trim() });

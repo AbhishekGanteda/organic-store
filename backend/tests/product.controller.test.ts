@@ -5,12 +5,12 @@ jest.mock('../models/Product', () => ({
   create: jest.fn(),
 }));
 
-import Product from '../models/Product';
+import Product from '../models/Product.js';
 import { getProducts,
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct, } from '../controllers/product.controller';
+  deleteProduct, } from '../controllers/product.controller.js';
 
 const createRes = () => {
   const res = {};

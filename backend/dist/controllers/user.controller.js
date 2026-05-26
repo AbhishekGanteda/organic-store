@@ -1,5 +1,5 @@
-import asyncHandler from '../middleware/async-handler';
-import User from '../models/User';
+import asyncHandler from '../middleware/async-handler.js';
+import User from '../models/User.js';
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find().select('-password').lean();
     res.json(users);

@@ -3,10 +3,10 @@ import { getAllReviews,
   getReviewById,
   createReview,
   updateReview,
-  deleteReview, } from '../controllers/review.controller';
-import { reviewValidator } from '../validators/review.validator';
-import validateRequest from '../middleware/validate.middleware';
-import { protect, admin } from '../middleware/auth.middleware';
+  deleteReview, } from '../controllers/review.controller.js';
+import { reviewValidator } from '../validators/review.validator.js';
+import validateRequest from '../middleware/validate.middleware.js';
+import { protect, admin } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 

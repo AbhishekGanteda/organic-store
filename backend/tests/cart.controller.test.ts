@@ -6,13 +6,13 @@ jest.mock('../models/User', () => ({
   findById: jest.fn(),
 }));
 
-import Product from '../models/Product';
-import User from '../models/User';
+import Product from '../models/Product.js';
+import User from '../models/User.js';
 import { getCart,
   addToCart,
   updateCartItem,
   removeCartItem,
-  clearCart, } from '../controllers/cart.controller';
+  clearCart, } from '../controllers/cart.controller.js';
 
 const createRes = () => {
   const res = {};

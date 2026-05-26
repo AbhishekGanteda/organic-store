@@ -7,8 +7,8 @@ jest.mock('../models/User', () => ({
 }));
 
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
-import { protect, admin } from '../middleware/auth.middleware';
+import User from '../models/User.js';
+import { protect, admin } from '../middleware/auth.middleware.js';
 
 const createRes = () => {
   const res = {};

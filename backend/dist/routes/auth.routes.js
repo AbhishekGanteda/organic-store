@@ -1,8 +1,8 @@
 import express from 'express';
-import { registerUser, loginUser, getLoginPublicKey, getMe, updateProfile, } from '../controllers/auth.controller';
-import { registerValidator, loginValidator, updateProfileValidator } from '../validators/auth.validator';
-import validateRequest from '../middleware/validate.middleware';
-import { protect } from '../middleware/auth.middleware';
+import { registerUser, loginUser, getLoginPublicKey, getMe, updateProfile, } from '../controllers/auth.controller.js';
+import { registerValidator, loginValidator, updateProfileValidator } from '../validators/auth.validator.js';
+import validateRequest from '../middleware/validate.middleware.js';
+import { protect } from '../middleware/auth.middleware.js';
 const router = express.Router();
 router.post('/register', registerValidator, validateRequest, registerUser);
 router.get('/login-public-key', getLoginPublicKey);

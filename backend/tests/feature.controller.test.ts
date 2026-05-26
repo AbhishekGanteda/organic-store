@@ -4,12 +4,12 @@ jest.mock('../models/Feature', () => ({
   create: jest.fn(),
 }));
 
-import Feature from '../models/Feature';
+import Feature from '../models/Feature.js';
 import { getAllFeatures,
   getFeatureById,
   createFeature,
   updateFeature,
-  deleteFeature, } from '../controllers/feature.controller';
+  deleteFeature, } from '../controllers/feature.controller.js';
 
 const createRes = () => {
   const res = {};

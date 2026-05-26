@@ -8,9 +8,9 @@ jest.mock('../models/User', () => ({
 }));
 
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
-import { generateToken } from '../utils/token';
-import createAdminUser from '../utils/createAdmin';
+import User from '../models/User.js';
+import { generateToken } from '../utils/token.js';
+import createAdminUser from '../utils/createAdmin.js';
 
 describe('utils', () => {
   beforeEach(() => {

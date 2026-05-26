@@ -1,8 +1,8 @@
 import express from 'express';
-import { getOrders, createOrder, updateOrderStatus, getOrderById, } from '../controllers/order.controller';
-import { protect, admin } from '../middleware/auth.middleware';
-import { orderValidator } from '../validators/order.validator';
-import validateRequest from '../middleware/validate.middleware';
+import { getOrders, createOrder, updateOrderStatus, getOrderById, } from '../controllers/order.controller.js';
+import { protect, admin } from '../middleware/auth.middleware.js';
+import { orderValidator } from '../validators/order.validator.js';
+import validateRequest from '../middleware/validate.middleware.js';
 const router = express.Router();
 router.use(protect);
 router.route('/').get(getOrders).post(orderValidator, validateRequest, createOrder);

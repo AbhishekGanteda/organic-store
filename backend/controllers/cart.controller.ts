@@ -1,6 +1,6 @@
-import asyncHandler from '../middleware/async-handler';
-import Product from '../models/Product';
-import User from '../models/User';
+import asyncHandler from '../middleware/async-handler.js';
+import Product from '../models/Product.js';
+import User from '../models/User.js';
 
 export const getCart = asyncHandler(async (req: any, res: any) => {
   const user = await User.findById(req.user._id).populate('cart.product', 'id name price image').lean();

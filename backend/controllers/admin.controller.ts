@@ -1,11 +1,11 @@
-import asyncHandler from '../middleware/async-handler';
-import User from '../models/User';
-import Product from '../models/Product';
-import Category from '../models/Category';
-import Feature from '../models/Feature';
-import Question from '../models/Question';
-import Review from '../models/Review';
-import Order from '../models/Order';
+import asyncHandler from '../middleware/async-handler.js';
+import User from '../models/User.js';
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+import Feature from '../models/Feature.js';
+import Question from '../models/Question.js';
+import Review from '../models/Review.js';
+import Order from '../models/Order.js';
 
 const getDashboardSummary = asyncHandler(async (req, res) => {
   const [

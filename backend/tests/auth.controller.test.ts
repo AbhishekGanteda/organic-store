@@ -12,14 +12,14 @@ jest.mock('../utils/auth-crypto', () => ({
   decryptLoginPassword: jest.fn(),
 }));
 
-import User from '../models/User';
-import { generateToken } from '../utils/token';
-import { getLoginPublicKey: loadLoginPublicKey, decryptLoginPassword } from '../utils/auth-crypto';
+import User from '../models/User.js';
+import { generateToken } from '../utils/token.js';
+import { getLoginPublicKey: loadLoginPublicKey, decryptLoginPassword } from '../utils/auth-crypto.js';
 import { loginUser,
   getLoginPublicKey,
   registerUser,
   getMe,
-  updateProfile, } from '../controllers/auth.controller';
+  updateProfile, } from '../controllers/auth.controller.js';
 
 const createRes = () => {
   const res = {};

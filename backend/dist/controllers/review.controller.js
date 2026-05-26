@@ -1,5 +1,5 @@
-import asyncHandler from '../middleware/async-handler';
-import Review from '../models/Review';
+import asyncHandler from '../middleware/async-handler.js';
+import Review from '../models/Review.js';
 const getAllReviews = asyncHandler(async (req, res) => {
     const reviews = await Review.find().sort({ id: 1 }).lean();
     res.json(reviews);

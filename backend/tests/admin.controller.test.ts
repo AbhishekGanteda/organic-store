@@ -9,14 +9,14 @@ jest.mock('../models/Order', () => ({
   aggregate: jest.fn(),
 }));
 
-import User from '../models/User';
-import Product from '../models/Product';
-import Category from '../models/Category';
-import Feature from '../models/Feature';
-import Question from '../models/Question';
-import Review from '../models/Review';
-import Order from '../models/Order';
-import { getDashboardSummary } from '../controllers/admin.controller';
+import User from '../models/User.js';
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+import Feature from '../models/Feature.js';
+import Question from '../models/Question.js';
+import Review from '../models/Review.js';
+import Order from '../models/Order.js';
+import { getDashboardSummary } from '../controllers/admin.controller.js';
 
 const createRes = () => {
   const res = {};
