@@ -21,7 +21,6 @@ const adminRoutes = require('./routes/admin.routes');
 
 dotenv.config();
 
-// Fail fast if critical environment variables are missing
 const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET'];
 const missing = requiredEnvs.filter(k => !process.env[k]);
 if (missing.length) {
@@ -33,37 +32,30 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-// Security headers
 app.use(helmet());
 
-// Simple rate limiter (tunable via env)
 const limiter = rateLimit({
   windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: Number(process.env.RATE_LIMIT_MAX) || 100, // limit each IP
+  max: Number(process.env.RATE_LIMIT_MAX) || 100,
   standardHeaders: true,
   legacyHeaders: false,
 });
 app.use(limiter);
 
-// CORS configuration: allow specific origins in production
 const corsOptions = process.env.CORS_ORIGIN
   ? { origin: process.env.CORS_ORIGIN.split(','), credentials: true }
   : { origin: true };
 app.use(cors(corsOptions));
 
-// Explicitly handle preflight requests for all routes
 app.options('*', cors(corsOptions));
 
-// Body parsing
 app.use(express.json());
 
-// Prevent NoSQL injection by sanitizing request data
 app.use(mongoSanitize());
 
 app.use(morgan('dev'));
 app.disable('etag');
 
-// Prevent caching for API routes by default
 app.use('/api', (req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
@@ -71,7 +63,6 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
-// Initialize DB and admin account
 connectDB().then(createAdminUser).catch(err => {
   console.error('Unable to initialize database', err);
   process.exit(1);

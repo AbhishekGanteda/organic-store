@@ -9,7 +9,6 @@ const getAllCategories = asyncHandler(async (req, res) => {
 const getCategoryById = asyncHandler(async (req, res) => {
     const param = req.params.id;
     let category;
-    // support numeric `id` field or MongoDB `_id`
     if (/^[0-9]+$/.test(param)) {
         category = await Category.findOne({ id: Number(param) }).lean();
     }

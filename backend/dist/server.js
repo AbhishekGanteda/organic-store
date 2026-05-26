@@ -4,8 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 const createAdminUser = require('./utils/createAdmin');
@@ -21,7 +19,6 @@ const orderRoutes = require('./routes/order.routes');
 const cartRoutes = require('./routes/cart.routes');
 const adminRoutes = require('./routes/admin.routes');
 dotenv.config();
-// Fail fast if critical environment variables are missing
 const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET'];
 const missing = requiredEnvs.filter(k => !process.env[k]);
 if (missing.length) {
@@ -30,37 +27,58 @@ if (missing.length) {
 }
 const PORT = process.env.PORT || 5000;
 const app = express();
-// Security headers
-app.use(helmet());
-// Simple rate limiter (tunable via env)
+const securityHeaders = (req, res, next) => {
+    res.set({
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'Referrer-Policy': 'no-referrer',
+    });
+    next();
+};
+const sanitizeMongoKeys = value => {
+    if (!value || typeof value !== 'object') {
+        return;
+    }
+    if (Array.isArray(value)) {
+        value.forEach(sanitizeMongoKeys);
+        return;
+    }
+    Object.keys(value).forEach(key => {
+        if (key.startsWith('$') || key.includes('.')) {
+            delete value[key];
+            return;
+        }
+        sanitizeMongoKeys(value[key]);
+    });
+};
+app.use(securityHeaders);
 const limiter = rateLimit({
     windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-    max: Number(process.env.RATE_LIMIT_MAX) || 100, // limit each IP
+    max: Number(process.env.RATE_LIMIT_MAX) || 100,
     standardHeaders: true,
     legacyHeaders: false,
 });
 app.use(limiter);
-// CORS configuration: allow specific origins in production
 const corsOptions = process.env.CORS_ORIGIN
     ? { origin: process.env.CORS_ORIGIN.split(','), credentials: true }
     : { origin: true };
 app.use(cors(corsOptions));
-// Explicitly handle preflight requests for all routes
 app.options('*', cors(corsOptions));
-// Body parsing
 app.use(express.json());
-// Prevent NoSQL injection by sanitizing request data
-app.use(mongoSanitize());
+app.use((req, res, next) => {
+    sanitizeMongoKeys(req.body);
+    sanitizeMongoKeys(req.query);
+    sanitizeMongoKeys(req.params);
+    next();
+});
 app.use(morgan('dev'));
 app.disable('etag');
-// Prevent caching for API routes by default
 app.use('/api', (req, res, next) => {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
     next();
 });
-// Initialize DB and admin account
 connectDB().then(createAdminUser).catch(err => {
     console.error('Unable to initialize database', err);
     process.exit(1);
