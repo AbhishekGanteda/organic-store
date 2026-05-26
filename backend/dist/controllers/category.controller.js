@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const asyncHandler = require('../middleware/async-handler');
-const Category = require('../models/Category');
+import asyncHandler from '../middleware/async-handler';
+import Category from '../models/Category';
 const getAllCategories = asyncHandler(async (req, res) => {
     const categories = await Category.find().sort({ id: 1 }).lean();
     res.json(categories);
@@ -67,11 +65,5 @@ const deleteCategory = asyncHandler(async (req, res) => {
     await category.deleteOne();
     res.json({ message: 'Category removed' });
 });
-module.exports = {
-    getAllCategories,
-    getCategoryById,
-    createCategory,
-    updateCategory,
-    deleteCategory,
-};
+export { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory };
 //# sourceMappingURL=category.controller.js.map

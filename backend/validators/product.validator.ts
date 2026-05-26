@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 
 const productValidator = [
   body('name').trim().notEmpty().withMessage('Name is required'),
@@ -8,4 +8,4 @@ const productValidator = [
   body('rating').optional().isNumeric().withMessage('Rating must be a number'),
 ];
 
-module.exports = { productValidator };
+export { productValidator };

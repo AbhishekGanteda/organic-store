@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const protect = async (req, res, next) => {
+import jwt from 'jsonwebtoken';
+import User from '../models/User';
+export const protect = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         res.status(401);
@@ -27,7 +25,7 @@ const protect = async (req, res, next) => {
         return next(new Error('Not authorized, token failed'));
     }
 };
-const admin = (req, res, next) => {
+export const admin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         next();
     }
@@ -36,5 +34,4 @@ const admin = (req, res, next) => {
         return next(new Error('Admin access required'));
     }
 };
-module.exports = { protect, admin };
 //# sourceMappingURL=auth.middleware.js.map

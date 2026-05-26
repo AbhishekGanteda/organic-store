@@ -1,14 +1,14 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   getCart,
   addToCart,
   updateCartItem,
   removeCartItem,
   clearCart,
-} = require('../controllers/cart.controller');
-const { cartValidator } = require('../validators/cart.validator');
-const validateRequest = require('../middleware/validate.middleware');
-const { protect } = require('../middleware/auth.middleware');
+} from '../controllers/cart.controller';
+import { cartValidator } from '../validators/cart.validator';
+import validateRequest from '../middleware/validate.middleware';
+import { protect } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
@@ -19,4 +19,4 @@ router.put('/:itemId', validateRequest, updateCartItem);
 router.delete('/:itemId', removeCartItem);
 router.delete('/', clearCart);
 
-module.exports = router;
+export default router;

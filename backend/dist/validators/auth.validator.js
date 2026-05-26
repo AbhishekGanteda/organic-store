@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const { body, oneOf } = require('express-validator');
+import { body, oneOf } from 'express-validator';
 const registerValidator = [
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
@@ -19,7 +17,7 @@ const loginValidator = [
     oneOf([
         body('password').notEmpty(),
         body('encryptedPassword').notEmpty(),
-    ], 'Password is required'),
+    ], { message: 'Password is required' }),
 ];
-module.exports = { registerValidator, loginValidator, updateProfileValidator };
+export { registerValidator, loginValidator, updateProfileValidator };
 //# sourceMappingURL=auth.validator.js.map

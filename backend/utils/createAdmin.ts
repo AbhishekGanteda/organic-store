@@ -1,4 +1,4 @@
-const User = require('../models/User');
+import User from '../models/User';
 
 const createAdminUser = async () => {
   if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
@@ -20,4 +20,4 @@ const createAdminUser = async () => {
   console.log('Admin user created');
 };
 
-module.exports = createAdminUser;
+export default createAdminUser;

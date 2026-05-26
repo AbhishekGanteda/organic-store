@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const User = require('../models/User');
+import User from '../models/User';
 const createAdminUser = async () => {
     if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
         return;
@@ -18,5 +16,5 @@ const createAdminUser = async () => {
     });
     console.log('Admin user created');
 };
-module.exports = createAdminUser;
+export default createAdminUser;
 //# sourceMappingURL=createAdmin.js.map

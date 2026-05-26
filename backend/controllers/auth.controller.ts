@@ -1,12 +1,12 @@
-const asyncHandler = require('../middleware/async-handler');
-const User = require('../models/User');
-const { generateToken } = require('../utils/token');
-const {
-  getLoginPublicKey: loadLoginPublicKey,
+import asyncHandler from '../middleware/async-handler';
+import User from '../models/User';
+import { generateToken } from '../utils/token';
+import {
+  getLoginPublicKey as loadLoginPublicKey,
   decryptLoginPassword,
-} = require('../utils/auth-crypto');
+} from '../utils/auth-crypto';
 
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req: any, res: any) => {
   const { name, email, password } = req.body;
 
   const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req: any, res: any) => {
   const { email, password, encryptedPassword } = req.body;
 
   let resolvedPassword = password;
@@ -58,7 +58,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email: email.toLowerCase().trim() });
 
-  if (user && await user.matchPassword(resolvedPassword)) {
+  if (user && await (user as any).matchPassword(resolvedPassword)) {
     res.json({
       user: {
         id: user._id,
@@ -74,12 +74,12 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getLoginPublicKey = asyncHandler(async (req, res) => {
+export const getLoginPublicKey = asyncHandler(async (req: any, res: any) => {
   const { publicKey, source } = loadLoginPublicKey();
   res.json({ publicKey, source });
 });
 
-const getMe = asyncHandler(async (req, res) => {
+export const getMe = asyncHandler(async (req: any, res: any) => {
   const user = req.user;
   res.json({
     id: user._id,
@@ -92,7 +92,7 @@ const getMe = asyncHandler(async (req, res) => {
   });
 });
 
-const updateProfile = asyncHandler(async (req, res) => {
+export const updateProfile = asyncHandler(async (req: any, res: any) => {
   const user = req.user;
   const { name, email, password, addresses } = req.body;
 
@@ -136,4 +136,4 @@ const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { registerUser, loginUser, getLoginPublicKey, getMe, updateProfile };
+// named exports already declared above

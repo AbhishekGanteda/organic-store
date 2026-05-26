@@ -1,5 +1,5 @@
-const asyncHandler = require('../middleware/async-handler');
-const Question = require('../models/Question');
+import asyncHandler from '../middleware/async-handler';
+import Question from '../models/Question';
 
 const getAllQuestions = asyncHandler(async (req, res) => {
   const questions = await Question.find().sort({ id: 1 }).lean();
@@ -55,10 +55,4 @@ const deleteQuestion = asyncHandler(async (req, res) => {
   res.json({ message: 'Question removed' });
 });
 
-module.exports = {
-  getAllQuestions,
-  getQuestionById,
-  createQuestion,
-  updateQuestion,
-  deleteQuestion,
-};
+export { getAllQuestions, getQuestionById, createQuestion, updateQuestion, deleteQuestion };

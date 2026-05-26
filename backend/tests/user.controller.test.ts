@@ -3,13 +3,11 @@ jest.mock('../models/User', () => ({
   findById: jest.fn(),
 }));
 
-const User = require('../models/User');
-const {
-  getUsers,
+import User from '../models/User';
+import { getUsers,
   getUserById,
   updateUser,
-  deleteUser,
-} = require('../controllers/user.controller');
+  deleteUser, } from '../controllers/user.controller';
 
 const createRes = () => {
   const res = {};

@@ -13,15 +13,13 @@ jest.mock('mongoose', () => ({
   },
 }));
 
-const Category = require('../models/Category');
-const mongoose = require('mongoose');
-const {
-  getAllCategories,
+import Category from '../models/Category';
+import mongoose from 'mongoose';
+import { getAllCategories,
   getCategoryById,
   createCategory,
   updateCategory,
-  deleteCategory,
-} = require('../controllers/category.controller');
+  deleteCategory, } from '../controllers/category.controller';
 
 const createRes = () => {
   const res = {};

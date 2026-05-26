@@ -1,5 +1,5 @@
-const asyncHandler = require('../middleware/async-handler');
-const Review = require('../models/Review');
+import asyncHandler from '../middleware/async-handler';
+import Review from '../models/Review';
 
 const getAllReviews = asyncHandler(async (req, res) => {
   const reviews = await Review.find().sort({ id: 1 }).lean();
@@ -57,10 +57,4 @@ const deleteReview = asyncHandler(async (req, res) => {
   res.json({ message: 'Review removed' });
 });
 
-module.exports = {
-  getAllReviews,
-  getReviewById,
-  createReview,
-  updateReview,
-  deleteReview,
-};
+export { getAllReviews, getReviewById, createReview, updateReview, deleteReview };

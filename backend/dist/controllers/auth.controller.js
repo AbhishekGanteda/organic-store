@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const asyncHandler = require('../middleware/async-handler');
-const User = require('../models/User');
-const { generateToken } = require('../utils/token');
-const { getLoginPublicKey: loadLoginPublicKey, decryptLoginPassword, } = require('../utils/auth-crypto');
-const registerUser = asyncHandler(async (req, res) => {
+import asyncHandler from '../middleware/async-handler';
+import User from '../models/User';
+import { generateToken } from '../utils/token';
+import { getLoginPublicKey as loadLoginPublicKey, decryptLoginPassword, } from '../utils/auth-crypto';
+export const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
     if (existingUser) {
@@ -32,7 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('Invalid user data');
     }
 });
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
     const { email, password, encryptedPassword } = req.body;
     let resolvedPassword = password;
     if (encryptedPassword) {
@@ -65,11 +63,11 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new Error('Invalid email or password');
     }
 });
-const getLoginPublicKey = asyncHandler(async (req, res) => {
+export const getLoginPublicKey = asyncHandler(async (req, res) => {
     const { publicKey, source } = loadLoginPublicKey();
     res.json({ publicKey, source });
 });
-const getMe = asyncHandler(async (req, res) => {
+export const getMe = asyncHandler(async (req, res) => {
     const user = req.user;
     res.json({
         id: user._id,
@@ -81,7 +79,7 @@ const getMe = asyncHandler(async (req, res) => {
         addresses: user.addresses,
     });
 });
-const updateProfile = asyncHandler(async (req, res) => {
+export const updateProfile = asyncHandler(async (req, res) => {
     const user = req.user;
     const { name, email, password, addresses } = req.body;
     if (email && email.toLowerCase().trim() !== user.email) {
@@ -119,5 +117,5 @@ const updateProfile = asyncHandler(async (req, res) => {
         addresses: user.addresses,
     });
 });
-module.exports = { registerUser, loginUser, getLoginPublicKey, getMe, updateProfile };
+// named exports already declared above
 //# sourceMappingURL=auth.controller.js.map

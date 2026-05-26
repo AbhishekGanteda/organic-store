@@ -7,10 +7,10 @@ jest.mock('../models/User', () => ({
   create: jest.fn(),
 }));
 
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { generateToken } = require('../utils/token');
-const createAdminUser = require('../utils/createAdmin');
+import jwt from 'jsonwebtoken';
+import User from '../models/User';
+import { generateToken } from '../utils/token';
+import createAdminUser from '../utils/createAdmin';
 
 describe('utils', () => {
   beforeEach(() => {

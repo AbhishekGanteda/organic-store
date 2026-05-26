@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const asyncHandler = require('../middleware/async-handler');
-const User = require('../models/User');
-const Product = require('../models/Product');
-const Category = require('../models/Category');
-const Feature = require('../models/Feature');
-const Question = require('../models/Question');
-const Review = require('../models/Review');
-const Order = require('../models/Order');
+import asyncHandler from '../middleware/async-handler';
+import User from '../models/User';
+import Product from '../models/Product';
+import Category from '../models/Category';
+import Feature from '../models/Feature';
+import Question from '../models/Question';
+import Review from '../models/Review';
+import Order from '../models/Order';
 const getDashboardSummary = asyncHandler(async (req, res) => {
     const [totalUsers, totalProducts, totalCategories, totalFeatures, totalQuestions, totalReviews, totalOrders, ordersByStatus, totalRevenue,] = await Promise.all([
         User.countDocuments(),
@@ -49,5 +47,5 @@ const getDashboardSummary = asyncHandler(async (req, res) => {
         }, {}),
     });
 });
-module.exports = { getDashboardSummary };
+export { getDashboardSummary };
 //# sourceMappingURL=admin.controller.js.map

@@ -1,5 +1,5 @@
-const asyncHandler = require('../middleware/async-handler');
-const User = require('../models/User');
+import asyncHandler from '../middleware/async-handler';
+import User from '../models/User';
 
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-password').lean();
@@ -52,4 +52,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.json({ message: 'User removed' });
 });
 
-module.exports = { getUsers, getUserById, updateUser, deleteUser };
+export { getUsers, getUserById, updateUser, deleteUser };

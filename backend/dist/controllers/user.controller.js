@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const asyncHandler = require('../middleware/async-handler');
-const User = require('../models/User');
+import asyncHandler from '../middleware/async-handler';
+import User from '../models/User';
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find().select('-password').lean();
     res.json(users);
@@ -47,5 +45,5 @@ const deleteUser = asyncHandler(async (req, res) => {
     await user.deleteOne();
     res.json({ message: 'User removed' });
 });
-module.exports = { getUsers, getUserById, updateUser, deleteUser };
+export { getUsers, getUserById, updateUser, deleteUser };
 //# sourceMappingURL=user.controller.js.map

@@ -1,5 +1,5 @@
-const asyncHandler = require('../middleware/async-handler');
-const Category = require('../models/Category');
+import asyncHandler from '../middleware/async-handler';
+import Category from '../models/Category';
 
 const getAllCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find().sort({ id: 1 }).lean();
@@ -79,10 +79,4 @@ const deleteCategory = asyncHandler(async (req, res) => {
   res.json({ message: 'Category removed' });
 });
 
-module.exports = {
-  getAllCategories,
-  getCategoryById,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-};
+export { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory };

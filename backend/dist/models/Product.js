@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema({
     id: {
         type: Number,
@@ -52,5 +50,5 @@ const productSchema = new mongoose.Schema({
 }, {
     timestamps: true,
 });
-module.exports = mongoose.model('Product', productSchema);
+export default mongoose.model('Product', productSchema);
 //# sourceMappingURL=Product.js.map

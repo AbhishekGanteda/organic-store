@@ -1,5 +1,5 @@
-const asyncHandler = require('../middleware/async-handler');
-const Feature = require('../models/Feature');
+import asyncHandler from '../middleware/async-handler';
+import Feature from '../models/Feature';
 
 const getAllFeatures = asyncHandler(async (req, res) => {
   const features = await Feature.find().sort({ id: 1 }).lean();
@@ -55,10 +55,4 @@ const deleteFeature = asyncHandler(async (req, res) => {
   res.json({ message: 'Feature removed' });
 });
 
-module.exports = {
-  getAllFeatures,
-  getFeatureById,
-  createFeature,
-  updateFeature,
-  deleteFeature,
-};
+export { getAllFeatures, getFeatureById, createFeature, updateFeature, deleteFeature };

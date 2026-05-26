@@ -1,7 +1,7 @@
-const asyncHandler = require('../middleware/async-handler');
-const Order = require('../models/Order');
-const Product = require('../models/Product');
-const User = require('../models/User');
+import asyncHandler from '../middleware/async-handler';
+import Order from '../models/Order';
+import Product from '../models/Product';
+import User from '../models/User';
 
 const getOrders = asyncHandler(async (req, res) => {
   const { status, search, page = 1, limit = 20 } = req.query;
@@ -104,4 +104,4 @@ const getOrderById = asyncHandler(async (req, res) => {
   res.json(order);
 });
 
-module.exports = { getOrders, createOrder, updateOrderStatus, getOrderById };
+export { getOrders, createOrder, updateOrderStatus, getOrderById };

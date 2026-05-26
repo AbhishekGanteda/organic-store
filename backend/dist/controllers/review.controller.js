@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const asyncHandler = require('../middleware/async-handler');
-const Review = require('../models/Review');
+import asyncHandler from '../middleware/async-handler';
+import Review from '../models/Review';
 const getAllReviews = asyncHandler(async (req, res) => {
     const reviews = await Review.find().sort({ id: 1 }).lean();
     res.json(reviews);
@@ -48,11 +46,5 @@ const deleteReview = asyncHandler(async (req, res) => {
     await review.deleteOne();
     res.json({ message: 'Review removed' });
 });
-module.exports = {
-    getAllReviews,
-    getReviewById,
-    createReview,
-    updateReview,
-    deleteReview,
-};
+export { getAllReviews, getReviewById, createReview, updateReview, deleteReview };
 //# sourceMappingURL=review.controller.js.map

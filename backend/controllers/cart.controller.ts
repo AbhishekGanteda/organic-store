@@ -1,14 +1,14 @@
-const asyncHandler = require('../middleware/async-handler');
-const Product = require('../models/Product');
-const User = require('../models/User');
+import asyncHandler from '../middleware/async-handler';
+import Product from '../models/Product';
+import User from '../models/User';
 
-const getCart = asyncHandler(async (req, res) => {
+export const getCart = asyncHandler(async (req: any, res: any) => {
   const user = await User.findById(req.user._id).populate('cart.product', 'id name price image').lean();
 
   res.json(user.cart || []);
 });
 
-const addToCart = asyncHandler(async (req, res) => {
+export const addToCart = asyncHandler(async (req: any, res: any) => {
   const { productId, quantity = 1 } = req.body;
   const product = await Product.findOne({ id: Number(productId) });
   if (!product) {
@@ -17,7 +17,7 @@ const addToCart = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(req.user._id);
-  const existingItem = user.cart.find(item => item.product.toString() === product._id.toString());
+  const existingItem = user.cart.find((item: any) => item.product.toString() === product._id.toString());
 
   if (existingItem) {
     existingItem.quantity += Number(quantity);
@@ -30,7 +30,7 @@ const addToCart = asyncHandler(async (req, res) => {
   res.status(201).json(updated.cart);
 });
 
-const updateCartItem = asyncHandler(async (req, res) => {
+export const updateCartItem = asyncHandler(async (req: any, res: any) => {
   const { quantity } = req.body;
   const user = await User.findById(req.user._id);
   const item = user.cart.id(req.params.itemId);
@@ -44,19 +44,17 @@ const updateCartItem = asyncHandler(async (req, res) => {
   res.json(updated.cart);
 });
 
-const removeCartItem = asyncHandler(async (req, res) => {
+export const removeCartItem = asyncHandler(async (req: any, res: any) => {
   const user = await User.findById(req.user._id);
-  user.cart = user.cart.filter(item => item._id.toString() !== req.params.itemId);
+  (user as any).cart = user.cart.filter((item: any) => item._id.toString() !== req.params.itemId);
   await user.save();
   const updated = await User.findById(req.user._id).populate('cart.product', 'id name price image').lean();
   res.json(updated.cart);
 });
 
-const clearCart = asyncHandler(async (req, res) => {
+export const clearCart = asyncHandler(async (req: any, res: any) => {
   const user = await User.findById(req.user._id);
-  user.cart = [];
+  (user as any).cart = [];
   await user.save();
   res.json([]);
 });
-
-module.exports = { getCart, addToCart, updateCartItem, removeCartItem, clearCart };

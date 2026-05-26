@@ -1,5 +1,5 @@
-const asyncHandler = require('../middleware/async-handler');
-const Product = require('../models/Product');
+import asyncHandler from '../middleware/async-handler';
+import Product from '../models/Product';
 
 const getProducts = asyncHandler(async (req, res) => {
   const {
@@ -129,10 +129,4 @@ const deleteProduct = asyncHandler(async (req, res) => {
   res.json({ message: 'Product removed' });
 });
 
-module.exports = {
-  getProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-};
+export { getProducts, getProductById, createProduct, updateProduct, deleteProduct };

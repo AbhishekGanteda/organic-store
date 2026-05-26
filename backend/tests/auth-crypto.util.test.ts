@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 describe('auth-crypto util', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('auth-crypto util', () => {
     process.env.AUTH_LOGIN_PUBLIC_KEY = '-----BEGIN PUBLIC KEY-----\\nabc\\n-----END PUBLIC KEY-----';
     process.env.AUTH_LOGIN_PRIVATE_KEY = '-----BEGIN PRIVATE KEY-----\\nxyz\\n-----END PRIVATE KEY-----';
 
-    const { getLoginPublicKey } = require('../utils/auth-crypto');
+    import { getLoginPublicKey } from '../utils/auth-crypto';
     const result = getLoginPublicKey();
 
     expect(result.source).toBe('env');
@@ -19,7 +19,7 @@ describe('auth-crypto util', () => {
   });
 
   it('generates key pair when env keys are absent', () => {
-    const { getLoginPublicKey } = require('../utils/auth-crypto');
+    import { getLoginPublicKey } from '../utils/auth-crypto';
     const result = getLoginPublicKey();
 
     expect(result.source).toBe('generated');
@@ -27,7 +27,7 @@ describe('auth-crypto util', () => {
   });
 
   it('decrypts encrypted password using env private key', () => {
-    const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+    import { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
       modulusLength: 2048,
       publicKeyEncoding: { type: 'spki', format: 'pem' },
       privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
@@ -45,14 +45,14 @@ describe('auth-crypto util', () => {
       Buffer.from('admin1234', 'utf8')
     );
 
-    const { decryptLoginPassword } = require('../utils/auth-crypto');
+    const { decryptLoginPassword } from '../utils/auth-crypto';
     const decrypted = decryptLoginPassword(encrypted.toString('base64'));
 
     expect(decrypted).toBe('admin1234');
   });
 
   it('returns null for empty encrypted password input', () => {
-    const { decryptLoginPassword } = require('../utils/auth-crypto');
+    import { decryptLoginPassword } from '../utils/auth-crypto';
     expect(decryptLoginPassword('')).toBeNull();
   });
 });

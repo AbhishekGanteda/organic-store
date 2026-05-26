@@ -1,23 +1,23 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const dotenv = require('dotenv');
-const rateLimit = require('express-rate-limit');
-const connectDB = require('./config/db');
-const createAdminUser = require('./utils/createAdmin');
-const errorHandler = require('./middleware/error.middleware');
-const authRoutes = require('./routes/auth.routes');
-const productRoutes = require('./routes/product.routes');
-const categoryRoutes = require('./routes/category.routes');
-const featureRoutes = require('./routes/feature.routes');
-const reviewRoutes = require('./routes/review.routes');
-const questionRoutes = require('./routes/question.routes');
-const userRoutes = require('./routes/user.routes');
-const orderRoutes = require('./routes/order.routes');
-const cartRoutes = require('./routes/cart.routes');
-const adminRoutes = require('./routes/admin.routes');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import rateLimit from 'express-rate-limit';
+import connectDB from './config/db';
+import createAdminUser from './utils/createAdmin';
+import errorHandler from './middleware/error.middleware';
+import authRoutes from './routes/auth.routes';
+import productRoutes from './routes/product.routes';
+import categoryRoutes from './routes/category.routes';
+import featureRoutes from './routes/feature.routes';
+import reviewRoutes from './routes/review.routes';
+import questionRoutes from './routes/question.routes';
+import userRoutes from './routes/user.routes';
+import orderRoutes from './routes/order.routes';
+import cartRoutes from './routes/cart.routes';
+import adminRoutes from './routes/admin.routes';
 dotenv.config();
 const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET'];
 const missing = requiredEnvs.filter(k => !process.env[k]);
@@ -27,31 +27,7 @@ if (missing.length) {
 }
 const PORT = process.env.PORT || 5000;
 const app = express();
-const securityHeaders = (req, res, next) => {
-    res.set({
-        'X-Content-Type-Options': 'nosniff',
-        'X-Frame-Options': 'DENY',
-        'Referrer-Policy': 'no-referrer',
-    });
-    next();
-};
-const sanitizeMongoKeys = value => {
-    if (!value || typeof value !== 'object') {
-        return;
-    }
-    if (Array.isArray(value)) {
-        value.forEach(sanitizeMongoKeys);
-        return;
-    }
-    Object.keys(value).forEach(key => {
-        if (key.startsWith('$') || key.includes('.')) {
-            delete value[key];
-            return;
-        }
-        sanitizeMongoKeys(value[key]);
-    });
-};
-app.use(securityHeaders);
+app.use(helmet());
 const limiter = rateLimit({
     windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
     max: Number(process.env.RATE_LIMIT_MAX) || 100,
@@ -65,12 +41,7 @@ const corsOptions = process.env.CORS_ORIGIN
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json());
-app.use((req, res, next) => {
-    sanitizeMongoKeys(req.body);
-    sanitizeMongoKeys(req.query);
-    sanitizeMongoKeys(req.params);
-    next();
-});
+app.use(mongoSanitize());
 app.use(morgan('dev'));
 app.disable('etag');
 app.use('/api', (req, res, next) => {

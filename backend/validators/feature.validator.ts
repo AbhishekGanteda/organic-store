@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 
 const featureValidator = [
   body('name').trim().notEmpty().withMessage('Name is required'),
@@ -6,4 +6,4 @@ const featureValidator = [
   body('description').trim().notEmpty().withMessage('Description is required'),
 ];
 
-module.exports = { featureValidator };
+export { featureValidator };

@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const reviewSchema = new mongoose.Schema({
     id: {
         type: Number,
@@ -29,5 +27,5 @@ const reviewSchema = new mongoose.Schema({
 }, {
     timestamps: true,
 });
-module.exports = mongoose.model('Review', reviewSchema);
+export default mongoose.model('Review', reviewSchema);
 //# sourceMappingURL=Review.js.map

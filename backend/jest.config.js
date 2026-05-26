@@ -1,8 +1,5 @@
-module.exports = {
-  testEnvironment: 'node',
-  clearMocks: true,
-  transform: {
-    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json', diagnostics: false }],
+export { testEnvironment: 'node', clearMocks, transform: {
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json', diagnostics };],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
   testMatch: ['**/tests/**/*.test.ts'],

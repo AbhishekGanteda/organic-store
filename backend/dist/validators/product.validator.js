@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 const productValidator = [
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('category').trim().notEmpty().withMessage('Category is required'),
@@ -8,5 +6,5 @@ const productValidator = [
     body('image').trim().notEmpty().withMessage('Image is required'),
     body('rating').optional().isNumeric().withMessage('Rating must be a number'),
 ];
-module.exports = { productValidator };
+export { productValidator };
 //# sourceMappingURL=product.validator.js.map

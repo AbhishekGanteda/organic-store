@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 
 const orderValidator = [
   body('items').isArray({ min: 1 }).withMessage('Order items are required'),
@@ -10,4 +10,4 @@ const orderValidator = [
   body('shippingAddress.country').trim().notEmpty().withMessage('Country is required'),
 ];
 
-module.exports = { orderValidator };
+export { orderValidator };

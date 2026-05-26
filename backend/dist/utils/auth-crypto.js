@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const crypto = require('crypto');
+import crypto from 'crypto';
 let cachedKeyPair = null;
 const normalizePem = value => {
     if (!value || typeof value !== 'string') {
@@ -47,8 +45,5 @@ const decryptLoginPassword = encryptedPassword => {
     }, Buffer.from(encryptedPassword, 'base64'));
     return decrypted.toString('utf8');
 };
-module.exports = {
-    getLoginPublicKey,
-    decryptLoginPassword,
-};
+export { getLoginPublicKey, decryptLoginPassword };
 //# sourceMappingURL=auth-crypto.js.map

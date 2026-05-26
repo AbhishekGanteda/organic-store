@@ -1,12 +1,12 @@
-const path = require('path');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
-const User = require('./models/User');
-const Product = require('./models/Product');
-const Category = require('./models/Category');
-const Feature = require('./models/Feature');
-const Review = require('./models/Review');
-const Question = require('./models/Question');
+import path from 'path';
+import dotenv from 'dotenv';
+import connectDB from './config/db';
+import User from './models/User';
+import Product from './models/Product';
+import Category from './models/Category';
+import Feature from './models/Feature';
+import Review from './models/Review';
+import Question from './models/Question';
 
 dotenv.config();
 

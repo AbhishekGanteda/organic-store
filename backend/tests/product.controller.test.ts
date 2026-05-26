@@ -5,14 +5,12 @@ jest.mock('../models/Product', () => ({
   create: jest.fn(),
 }));
 
-const Product = require('../models/Product');
-const {
-  getProducts,
+import Product from '../models/Product';
+import { getProducts,
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct,
-} = require('../controllers/product.controller');
+  deleteProduct, } from '../controllers/product.controller';
 
 const createRes = () => {
   const res = {};

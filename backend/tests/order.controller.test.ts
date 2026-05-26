@@ -13,15 +13,13 @@ jest.mock('../models/User', () => ({
   findByIdAndUpdate: jest.fn(),
 }));
 
-const Order = require('../models/Order');
-const Product = require('../models/Product');
-const User = require('../models/User');
-const {
-  getOrders,
+import Order from '../models/Order';
+import Product from '../models/Product';
+import User from '../models/User';
+import { getOrders,
   createOrder,
   updateOrderStatus,
-  getOrderById,
-} = require('../controllers/order.controller');
+  getOrderById, } from '../controllers/order.controller';
 
 const createRes = () => {
   const res = {};

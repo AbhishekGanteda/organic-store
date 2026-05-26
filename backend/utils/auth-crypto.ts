@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 let cachedKeyPair = null;
 
@@ -62,7 +62,4 @@ const decryptLoginPassword = encryptedPassword => {
   return decrypted.toString('utf8');
 };
 
-module.exports = {
-  getLoginPublicKey,
-  decryptLoginPassword,
-};
+export { getLoginPublicKey, decryptLoginPassword };

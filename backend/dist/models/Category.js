@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const categorySchema = new mongoose.Schema({
     id: {
         type: Number,
@@ -23,5 +21,5 @@ const categorySchema = new mongoose.Schema({
 }, {
     timestamps: true,
 });
-module.exports = mongoose.model('Category', categorySchema);
+export default mongoose.model('Category', categorySchema);
 //# sourceMappingURL=Category.js.map

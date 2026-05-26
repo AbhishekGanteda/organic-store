@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 const orderValidator = [
     body('items').isArray({ min: 1 }).withMessage('Order items are required'),
     body('items.*.product').notEmpty().withMessage('Product id is required'),
@@ -10,5 +8,5 @@ const orderValidator = [
     body('shippingAddress.postalCode').trim().notEmpty().withMessage('Postal code is required'),
     body('shippingAddress.country').trim().notEmpty().withMessage('Country is required'),
 ];
-module.exports = { orderValidator };
+export { orderValidator };
 //# sourceMappingURL=order.validator.js.map

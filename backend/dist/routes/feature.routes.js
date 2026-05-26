@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require('express');
-const { getAllFeatures, getFeatureById, createFeature, updateFeature, deleteFeature, } = require('../controllers/feature.controller');
-const { featureValidator } = require('../validators/feature.validator');
-const validateRequest = require('../middleware/validate.middleware');
-const { protect, admin } = require('../middleware/auth.middleware');
+import express from 'express';
+import { getAllFeatures, getFeatureById, createFeature, updateFeature, deleteFeature, } from '../controllers/feature.controller';
+import { featureValidator } from '../validators/feature.validator';
+import validateRequest from '../middleware/validate.middleware';
+import { protect, admin } from '../middleware/auth.middleware';
 const router = express.Router();
 router.route('/').get(getAllFeatures).post(protect, admin, featureValidator, validateRequest, createFeature);
 router.route('/:id').get(getFeatureById).put(protect, admin, featureValidator, validateRequest, updateFeature).delete(protect, admin, deleteFeature);
-module.exports = router;
+export default router;
 //# sourceMappingURL=feature.routes.js.map

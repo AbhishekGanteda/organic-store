@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const asyncHandler = require('../middleware/async-handler');
-const Question = require('../models/Question');
+import asyncHandler from '../middleware/async-handler';
+import Question from '../models/Question';
 const getAllQuestions = asyncHandler(async (req, res) => {
     const questions = await Question.find().sort({ id: 1 }).lean();
     res.json(questions);
@@ -46,11 +44,5 @@ const deleteQuestion = asyncHandler(async (req, res) => {
     await question.deleteOne();
     res.json({ message: 'Question removed' });
 });
-module.exports = {
-    getAllQuestions,
-    getQuestionById,
-    createQuestion,
-    updateQuestion,
-    deleteQuestion,
-};
+export { getAllQuestions, getQuestionById, createQuestion, updateQuestion, deleteQuestion };
 //# sourceMappingURL=question.controller.js.map

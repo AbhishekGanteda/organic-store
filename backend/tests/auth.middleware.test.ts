@@ -6,9 +6,9 @@ jest.mock('../models/User', () => ({
   findById: jest.fn(),
 }));
 
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { protect, admin } = require('../middleware/auth.middleware');
+import jwt from 'jsonwebtoken';
+import User from '../models/User';
+import { protect, admin } from '../middleware/auth.middleware';
 
 const createRes = () => {
   const res = {};

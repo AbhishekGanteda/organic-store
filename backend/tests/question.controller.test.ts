@@ -4,14 +4,12 @@ jest.mock('../models/Question', () => ({
   create: jest.fn(),
 }));
 
-const Question = require('../models/Question');
-const {
-  getAllQuestions,
+import Question from '../models/Question';
+import { getAllQuestions,
   getQuestionById,
   createQuestion,
   updateQuestion,
-  deleteQuestion,
-} = require('../controllers/question.controller');
+  deleteQuestion, } from '../controllers/question.controller';
 
 const createRes = () => {
   const res = {};
